@@ -2,152 +2,193 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等额本息每月持有成本明细</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>移动端持有成本计算器</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             background-color: #f5f7fa;
             color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            line-height: 1.5;
+            padding: 0;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 30px;
+            padding: 16px;
         }
         
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            padding-top: 10px;
         }
         
         h1 {
             color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 22px;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
         
         .subtitle {
             color: #7f8c8d;
-            font-size: 16px;
+            font-size: 14px;
+            line-height: 1.4;
         }
         
         .calculator {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
-        @media (max-width: 768px) {
-            .calculator {
-                grid-template-columns: 1fr;
-            }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eef1f5;
         }
         
-        .input-section {
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f2f5;
         }
         
-        .output-section {
-            padding: 20px;
-            background-color: #f0f7ff;
-            border-radius: 10px;
+        .card-title i {
+            margin-right: 8px;
+            font-size: 20px;
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 18px;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
         }
         
         .input-with-unit {
             position: relative;
+            margin-bottom: 8px;
         }
         
-        input {
+        input, select {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #e1e5eb;
-            border-radius: 8px;
-            font-size: 18px;
-            transition: border-color 0.3s;
+            border: 1.5px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.2s;
+            background-color: #fafbfc;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #3498db;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
         .unit {
             position: absolute;
-            right: 15px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: #7f8c8d;
             font-weight: 500;
+            font-size: 15px;
         }
         
         .slider-container {
-            margin-top: 10px;
+            margin-top: 12px;
+            padding: 0 4px;
         }
         
         .slider {
             width: 100%;
-            height: 6px;
-            border-radius: 3px;
+            height: 8px;
+            border-radius: 4px;
             background: #e1e5eb;
             outline: none;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
-        .loan-breakdown {
-            margin-top: 15px;
-            font-size: 14px;
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .percentage-display {
+            font-size: 12px;
             color: #7f8c8d;
+            margin-top: 4px;
+            text-align: right;
         }
         
-        .interest-rate {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: white;
-            border-radius: 6px;
+        .parameter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
-        .rate-part1 {
-            border-left: 4px solid #2ecc71;
-        }
-        
-        .rate-part2 {
-            border-left: 4px solid #e74c3c;
+        @media (max-width: 380px) {
+            .parameter-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
         }
         
         .loan-summary {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #3498db;
         }
         
         .summary-item {
@@ -155,69 +196,139 @@
             justify-content: space-between;
             margin-bottom: 10px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eef2f7;
         }
         
         .summary-item:last-child {
             border-bottom: none;
-            font-weight: bold;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            font-weight: 600;
             color: #3498db;
-            font-size: 18px;
         }
         
-        .result {
-            text-align: center;
-            margin: 25px 0;
-            padding: 25px;
+        .button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+        }
+        
+        .button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .button:hover {
+            background: linear-gradient(135deg, #2980b9, #2573a7);
+        }
+        
+        .note {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: #fff8e6;
+            border-radius: 10px;
+            border-left: 4px solid #f1c40f;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .result-box {
             background-color: white;
             border-radius: 10px;
+            padding: 16px;
+            text-align: center;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eef1f5;
         }
         
-        .monthly-cost {
-            font-size: 42px;
+        .result-title {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .result-value {
+            font-size: 24px;
             font-weight: 700;
+            margin: 8px 0;
+        }
+        
+        .result-value.blue {
+            color: #3498db;
+        }
+        
+        .result-value.red {
             color: #e74c3c;
-            margin: 15px 0;
+        }
+        
+        .result-detail {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 4px;
         }
         
         .cost-breakdown {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 25px 0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
         }
         
         .cost-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eef2f7;
         }
         
         .cost-item:last-child {
             border-bottom: none;
-            font-weight: bold;
-            font-size: 18px;
-            color: #e74c3c;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            font-weight: 600;
         }
         
         .cost-label {
             display: flex;
             align-items: center;
+            font-size: 14px;
         }
         
         .cost-icon {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 10px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             color: white;
         }
@@ -238,147 +349,23 @@
             background-color: #3498db;
         }
         
-        .button {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
-        }
-        
-        .button:hover {
-            background-color: #2980b9;
-        }
-        
-        .note {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fff8e1;
-            border-radius: 8px;
-            border-left: 4px solid #f1c40f;
-            font-size: 14px;
-        }
-        
-        .error {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #95a5a6;
-            font-size: 14px;
-        }
-        
-        .percentage-display {
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e1e5eb;
-            flex-wrap: wrap;
-        }
-        
-        .tab {
-            padding: 12px 24px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #7f8c8d;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        
-        .tab.active {
-            color: #3498db;
-            border-bottom: 3px solid #3498db;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .monthly-table-container {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-top: 20px;
-            border: 1px solid #e1e5eb;
-            border-radius: 8px;
-        }
-        
-        .monthly-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .monthly-table th {
-            background-color: #f8f9fa;
-            padding: 12px 15px;
-            text-align: center;
-            font-weight: 600;
-            color: #2c3e50;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-bottom: 2px solid #e1e5eb;
-        }
-        
-        .monthly-table td {
-            padding: 10px 15px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .monthly-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .monthly-table tr:hover {
-            background-color: #f0f7ff;
-        }
-        
-        .year-header {
-            background-color: #e8f4fc !important;
-            font-weight: bold !important;
-        }
-        
-        .chart-container {
-            height: 300px;
-            margin-top: 20px;
-            position: relative;
-        }
-        
         .time-filter {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
             flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 8px 0;
         }
         
         .time-btn {
             padding: 8px 16px;
             background-color: #f8f9fa;
-            border: 1px solid #e1e5eb;
-            border-radius: 6px;
+            border: 1.5px solid #e1e5eb;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-size: 13px;
+            white-space: nowrap;
         }
         
         .time-btn.active {
@@ -387,74 +374,280 @@
             border-color: #3498db;
         }
         
-        .time-btn:hover {
-            background-color: #e9ecef;
-        }
-        
-        .time-btn.active:hover {
-            background-color: #2980b9;
-        }
-        
         .month-selector {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 15px;
+        }
+        
+        .month-selector span {
+            font-size: 14px;
+            color: #555;
         }
         
         .month-selector input {
-            width: 80px;
-            padding: 8px;
+            width: 70px;
+            padding: 10px;
             text-align: center;
+            font-size: 15px;
+            margin: 0 8px;
         }
         
         .month-selector button {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        
-        .cost-trend {
-            background-color: white;
             border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
         }
         
-        .trend-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+        .monthly-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border: 1px solid #e1e5eb;
+            border-radius: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        .monthly-table th {
+            background-color: #f8f9fa;
+            padding: 12px 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid #e1e5eb;
+            font-size: 13px;
+        }
+        
+        .monthly-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+        
+        .monthly-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .monthly-table tr:active {
+            background-color: #f0f7ff;
+        }
+        
+        .year-header {
+            background-color: #e8f4fc !important;
+            font-weight: bold !important;
+            font-size: 13px !important;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #95a5a6;
+            font-size: 12px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
         }
         
         .highlight {
             background-color: #fffacd;
-            padding: 3px 6px;
+            padding: 2px 4px;
             border-radius: 4px;
-            font-weight: bold;
+            font-weight: 600;
+        }
+        
+        .collapse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            cursor: pointer;
+            border-bottom: 1px solid #eef2f7;
+        }
+        
+        .collapse-content {
+            padding: 16px 0;
+            display: none;
+        }
+        
+        .collapse-content.active {
+            display: block;
+        }
+        
+        .collapse-arrow {
+            transition: transform 0.3s;
+        }
+        
+        .collapse-arrow.active {
+            transform: rotate(180deg);
+        }
+        
+        @media (max-width: 480px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .month-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .month-selector input {
+                width: 100%;
+                margin: 8px 0;
+            }
+            
+            .month-selector button {
+                width: 100%;
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #3498db;
+        }
+        
+        .emoji {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        
+        .year-cost-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 12px;
+            background-color: #f0f7ff;
+            border-radius: 10px;
+            border: 1px solid #3498db;
+        }
+        
+        .year-cost-selector label {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        .year-cost-selector input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .year-cost-result {
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .year-cost-result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d1e7f7;
+        }
+        
+        .year-cost-result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        .year-cost-value {
+            font-weight: 600;
+            color: #e74c3c;
+        }
+        
+        .comparison-bar {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            height: 8px;
+            background-color: #e1e5eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .comparison-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            border-radius: 4px;
+        }
+        
+        .cost-distribution {
+            margin-top: 16px;
+        }
+        
+        .distribution-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .distribution-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .distribution-label {
+            font-size: 13px;
+            color: #555;
+            flex: 1;
+        }
+        
+        .distribution-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>等额本息每月持有成本明细</h1>
-            <p class="subtitle">展示360个月中每月的利息变化和持有成本（机会成本+折旧费+当月利息）</p>
+            <h1>📱 房产持有成本计算器</h1>
+            <p class="subtitle">输入房屋信息，计算每月月供和真实持有成本</p>
         </header>
         
-        <div class="tabs">
-            <div class="tab active" id="tab-input">输入参数</div>
-            <div class="tab" id="tab-results">汇总结果</div>
-            <div class="tab" id="tab-monthly">每月明细</div>
-            <div class="tab" id="tab-chart">趋势图表</div>
-        </div>
-        
         <div class="calculator">
-            <div class="input-section tab-content active">
+            <!-- 输入参数区域 -->
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🏠</span> 房屋信息
+                </div>
+                
                 <div class="form-group">
                     <label for="totalPrice">房屋总价</label>
                     <div class="input-with-unit">
@@ -479,156 +672,242 @@
                     <div class="percentage-display" id="downPaymentPercentage">首付比例：33.3%</div>
                     <div id="downPaymentError" class="error">首付金额不能超过房屋总价</div>
                 </div>
-                
-                <div class="loan-summary">
-                    <h3>贷款计算摘要</h3>
-                    <div class="summary-item">
-                        <span>房屋总价：</span>
-                        <span id="summaryTotalPrice">300 万元</span>
+            </div>
+            
+            <!-- 自定义参数区域（可折叠） -->
+            <div class="card">
+                <div class="collapse-header" id="customParamsHeader">
+                    <div class="card-title">
+                        <span class="emoji">⚙️</span> 自定义参数
                     </div>
-                    <div class="summary-item">
-                        <span>首付金额：</span>
-                        <span id="summaryDownPayment">100 万元</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>贷款金额：</span>
-                        <span id="summaryLoanAmount">200 万元</span>
-                    </div>
+                    <div class="collapse-arrow">▼</div>
                 </div>
                 
-                <div class="loan-breakdown">
-                    <p>贷款利率分段规则：</p>
-                    <div class="interest-rate rate-part1">
-                        <span>≤ 154万元部分：</span>
-                        <span>年利率 2.6%</span>
-                    </div>
-                    <div class="interest-rate rate-part2">
-                        <span>> 154万元部分：</span>
-                        <span>年利率 3.05%</span>
+                <div class="collapse-content" id="customParamsContent">
+                    <div class="parameter-grid">
+                        <div class="form-group">
+                            <label for="rateLimit">分段利率节点</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="rateLimit" min="0" max="1000" step="1" value="154">
+                                <span class="unit">万元</span>
+                            </div>
+                            <div class="percentage-display">≤此金额部分适用利率1</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="opportunityRate">机会成本年利率</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="opportunityRate" min="0" max="20" step="0.1" value="2.0">
+                                <span class="unit">%</span>
+                            </div>
+                            <div class="percentage-display">首付资金的年化收益率</div>
+                        </div>
                     </div>
                     
-                    <p style="margin-top: 15px;">持有成本计算规则：</p>
-                    <div class="interest-rate">
-                        <span>首付机会成本：</span>
-                        <span>年收益率 2%</span>
+                    <div class="parameter-grid">
+                        <div class="form-group">
+                            <label for="rate1">利率1 (≤节点部分)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="rate1" min="0" max="20" step="0.01" value="2.6">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="rate2">利率2 (>节点部分)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="rate2" min="0" max="20" step="0.01" value="3.05">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="interest-rate">
-                        <span>房屋年折旧率：</span>
-                        <span>房屋总价的 1%</span>
+                    
+                    <div class="loan-summary">
+                        <div class="summary-item">
+                            <span>房屋总价：</span>
+                            <span id="summaryTotalPrice">300 万元</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>首付金额：</span>
+                            <span id="summaryDownPayment">100 万元</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>贷款金额：</span>
+                            <span id="summaryLoanAmount">200 万元</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>利率分段：</span>
+                            <span id="summaryRateSplit">≤154万:2.6% >154万:3.05%</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>贷款期限</label>
-                    <input type="text" value="30年 (360个月)" disabled>
-                </div>
-                
-                <button id="calculateBtn" class="button">计算每月持有成本</button>
-                
-                <div class="note">
-                    <p><strong>持有成本计算公式：</strong></p>
-                    <p>每月持有成本 = <span class="highlight">机会成本</span> + <span class="highlight">折旧成本</span> + <span class="highlight">当月利息</span></p>
-                    <p>1. <strong>机会成本</strong>：首付资金如用于理财，按年化2%计算的每月收益损失（每月固定）</p>
-                    <p>2. <strong>折旧成本</strong>：房屋每年折旧1%（按房屋总价计算），平摊到每月的费用（每月固定）</p>
-                    <p>3. <strong>当月利息</strong>：等额本息还款中当月实际支付的利息（每月递减）</p>
-                    <p class="highlight">注意：等额本息方式下，每月利息逐渐减少，因此每月持有成本也会逐渐降低。</p>
+                    
+                    <div class="form-group">
+                        <label>贷款期限</label>
+                        <input type="text" value="30年 (360个月)" disabled>
+                    </div>
                 </div>
             </div>
             
-            <div class="output-section">
-                <div class="tab-content active" id="results-content">
-                    <h2>持有成本汇总</h2>
-                    
-                    <div class="result">
-                        <div>平均每月持有成本</div>
-                        <div class="monthly-cost" id="avgMonthlyCost">--</div>
-                        <div>机会成本 + 折旧费 + 平均利息</div>
+            <!-- 计算按钮 -->
+            <button id="calculateBtn" class="button">
+                <span class="emoji">🧮</span> 开始计算
+            </button>
+            
+            <!-- 加载指示器 -->
+            <div class="loading" id="loadingIndicator">
+                <span class="emoji">⏳</span> 计算中，请稍候...
+            </div>
+            
+            <!-- 计算结果区域 -->
+            <div class="card" id="resultsCard" style="display: none;">
+                <div class="card-title">
+                    <span class="emoji">📊</span> 计算结果
+                </div>
+                
+                <!-- 关键指标对比 -->
+                <div class="result-grid">
+                    <div class="result-box">
+                        <div class="result-title">每月月供</div>
+                        <div class="result-value blue" id="monthlyPaymentResult">--</div>
+                        <div class="result-detail">30年等额本息</div>
                     </div>
                     
-                    <div class="cost-breakdown">
-                        <h3>成本构成（平均值）</h3>
-                        <div class="cost-item">
-                            <div class="cost-label">
-                                <div class="cost-icon icon-opportunity">机</div>
-                                <span>机会成本（每月固定）</span>
-                            </div>
-                            <div id="costOpportunity">--</div>
-                        </div>
-                        <div class="cost-item">
-                            <div class="cost-label">
-                                <div class="cost-icon icon-depreciation">折</div>
-                                <span>折旧成本（每月固定）</span>
-                            </div>
-                            <div id="costDepreciation">--</div>
-                        </div>
-                        <div class="cost-item">
-                            <div class="cost-label">
-                                <div class="cost-icon icon-interest">息</div>
-                                <span>平均利息成本</span>
-                            </div>
-                            <div id="costInterestAvg">--</div>
-                        </div>
-                        <div class="cost-item">
-                            <div class="cost-label">
-                                <strong>平均每月持有成本</strong>
-                            </div>
-                            <div class="monthly-cost" id="totalAvgMonthlyCost">--</div>
-                        </div>
+                    <div class="result-box">
+                        <div class="result-title">平均持有成本</div>
+                        <div class="result-value red" id="avgMonthlyCost">--</div>
+                        <div class="result-detail">每月机会+折旧+利息</div>
+                    </div>
+                </div>
+                
+                <!-- 前N年平均持有成本设置 -->
+                <div class="year-cost-selector">
+                    <label for="yearCount">前 N 年平均持有成本：</label>
+                    <div class="input-with-unit" style="width: auto;">
+                        <input type="number" id="yearCount" min="1" max="30" step="1" value="5">
+                        <span class="unit">年</span>
+                    </div>
+                </div>
+                
+                <!-- 前N年平均持有成本结果 -->
+                <div class="year-cost-result">
+                    <div class="year-cost-result-item">
+                        <span>前 <span id="yearCountDisplay">5</span> 年平均每月持有成本：</span>
+                        <span class="year-cost-value" id="avgCostForNYears">--</span>
+                    </div>
+                    <div class="year-cost-result-item">
+                        <span>前 <span id="yearCountDisplay2">5</span> 年总持有成本：</span>
+                        <span class="year-cost-value" id="totalCostForNYears">--</span>
+                    </div>
+                    <div class="year-cost-result-item">
+                        <span>占30年总成本比例：</span>
+                        <span class="year-cost-value" id="costPercentage">--</span>
                     </div>
                     
-                    <div class="cost-breakdown">
-                        <h3>首月与末月对比</h3>
-                        <div class="trend-item">
-                            <span>首月持有成本：</span>
-                            <span id="firstMonthCost">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>末月持有成本：</span>
-                            <span id="lastMonthCost">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>持有成本减少：</span>
-                            <span id="costReduction">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>30年总持有成本：</span>
-                            <span id="total30YearCost">--</span>
-                        </div>
+                    <!-- 比例条形图 -->
+                    <div class="comparison-bar">
+                        <div class="comparison-fill" id="percentageBar" style="width: 0%"></div>
                     </div>
                     
-                    <div class="cost-breakdown">
-                        <h3>贷款信息汇总</h3>
-                        <div class="trend-item">
-                            <span>贷款总额：</span>
-                            <span id="totalLoan">--</span>
+                    <!-- 成本构成分布 -->
+                    <div class="cost-distribution">
+                        <div class="distribution-item">
+                            <div class="distribution-color" style="background-color: #2ecc71;"></div>
+                            <div class="distribution-label">机会成本占比：</div>
+                            <div class="distribution-value" id="opportunityPercentage">--</div>
                         </div>
-                        <div class="trend-item">
-                            <span>总利息：</span>
-                            <span id="totalInterest">--</span>
+                        <div class="distribution-item">
+                            <div class="distribution-color" style="background-color: #9b59b6;"></div>
+                            <div class="distribution-label">折旧成本占比：</div>
+                            <div class="distribution-value" id="depreciationPercentage">--</div>
                         </div>
-                        <div class="trend-item">
-                            <span>首月利息：</span>
-                            <span id="firstMonthInterest">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>末月利息：</span>
-                            <span id="lastMonthInterest">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>每月月供：</span>
-                            <span id="monthlyPayment">--</span>
+                        <div class="distribution-item">
+                            <div class="distribution-color" style="background-color: #e74c3c;"></div>
+                            <div class="distribution-label">利息成本占比：</div>
+                            <div class="distribution-value" id="interestPercentage">--</div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="tab-content" id="monthly-content">
-                    <h2>每月持有成本明细</h2>
-                    
+                <!-- 月供明细 -->
+                <div class="cost-breakdown">
+                    <div class="cost-item">
+                        <span>每月月供：</span>
+                        <span id="monthlyPaymentDetail">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <span>其中利息：</span>
+                        <span id="monthlyInterestDetail">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <span>其中本金：</span>
+                        <span id="monthlyPrincipalDetail">--</span>
+                    </div>
+                    <div class="cost-item" style="font-weight: 600; color: #3498db;">
+                        <span>30年还款总额：</span>
+                        <span id="totalPaymentResult">--</span>
+                    </div>
+                </div>
+                
+                <!-- 持有成本明细 -->
+                <div class="cost-breakdown">
+                    <div class="cost-item">
+                        <div class="cost-label">
+                            <div class="cost-icon icon-opportunity">机</div>
+                            <span>机会成本（每月）：</span>
+                        </div>
+                        <span id="avgOpportunityCost">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-label">
+                            <div class="cost-icon icon-depreciation">折</div>
+                            <span>折旧成本（每月）：</span>
+                        </div>
+                        <span id="avgDepreciationCost">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-label">
+                            <div class="cost-icon icon-interest">息</div>
+                            <span>平均利息成本：</span>
+                        </div>
+                        <span id="avgInterestCost">--</span>
+                    </div>
+                    <div class="cost-item" style="font-weight: 600; color: #e74c3c;">
+                        <div class="cost-label">
+                            <div class="cost-icon icon-total">总</div>
+                            <span>30年总持有成本：</span>
+                        </div>
+                        <span id="total30YearCost">--</span>
+                    </div>
+                </div>
+                
+                <!-- 首末月对比 -->
+                <div class="cost-breakdown">
+                    <div class="cost-item">
+                        <span>首月持有成本：</span>
+                        <span id="firstMonthCost">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <span>末月持有成本：</span>
+                        <span id="lastMonthCost">--</span>
+                    </div>
+                    <div class="cost-item">
+                        <span>持有成本减少：</span>
+                        <span id="costReduction">--</span>
+                    </div>
+                </div>
+                
+                <!-- 每月明细表格（可折叠） -->
+                <div class="collapse-header" id="monthlyDetailHeader">
+                    <div class="card-title">
+                        <span class="emoji">📈</span> 每月明细（点击展开）
+                    </div>
+                    <div class="collapse-arrow">▼</div>
+                </div>
+                
+                <div class="collapse-content" id="monthlyDetailContent">
                     <div class="time-filter">
                         <div class="time-btn active" data-years="5">前5年</div>
                         <div class="time-btn" data-years="10">前10年</div>
-                        <div class="time-btn" data-years="15">前15年</div>
-                        <div class="time-btn" data-years="30">全部30年</div>
                         <div class="time-btn" data-years="1">第1年</div>
                         <div class="time-btn" data-years="last5">最后5年</div>
                     </div>
@@ -647,11 +926,10 @@
                                     <th>期数</th>
                                     <th>年份</th>
                                     <th>月份</th>
-                                    <th>当月利息</th>
-                                    <th>机会成本</th>
-                                    <th>折旧成本</th>
+                                    <th>月供</th>
+                                    <th>利息</th>
+                                    <th>本金</th>
                                     <th>持有成本</th>
-                                    <th>累计持有成本</th>
                                 </tr>
                             </thead>
                             <tbody id="monthlyTableBody">
@@ -659,64 +937,26 @@
                             </tbody>
                         </table>
                     </div>
-                    
-                    <div class="note">
-                        <p><strong>说明：</strong></p>
-                        <p>1. <strong>当月利息</strong>：等额本息还款中当月实际支付的利息，随着还款期数增加而逐渐减少</p>
-                        <p>2. <strong>机会成本</strong>：每月固定，= 首付金额 × 2% ÷ 12</p>
-                        <p>3. <strong>折旧成本</strong>：每月固定，= 房屋总价 × 1% ÷ 12</p>
-                        <p>4. <strong>持有成本</strong> = 机会成本 + 折旧成本 + 当月利息</p>
-                        <p>5. 由于利息逐月递减，持有成本也逐月递减，从最高点逐渐降低</p>
-                    </div>
                 </div>
-                
-                <div class="tab-content" id="chart-content">
-                    <h2>持有成本变化趋势</h2>
-                    
-                    <div class="time-filter">
-                        <div class="time-btn active" data-chart-years="5">前5年</div>
-                        <div class="time-btn" data-chart-years="10">前10年</div>
-                        <div class="time-btn" data-chart-years="15">前15年</div>
-                        <div class="time-btn" data-chart-years="30">全部30年</div>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="costChart"></canvas>
-                    </div>
-                    
-                    <div class="cost-breakdown">
-                        <h3>趋势分析</h3>
-                        <div class="trend-item">
-                            <span>最高持有成本（第1个月）：</span>
-                            <span id="maxCost">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>最低持有成本（第360个月）：</span>
-                            <span id="minCost">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>持有成本下降幅度：</span>
-                            <span id="costDrop">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>持有成本减半所需时间：</span>
-                            <span id="halfCostTime">--</span>
-                        </div>
-                        <div class="trend-item">
-                            <span>前10年持有成本占比：</span>
-                            <span id="first10YearsPercent">--</span>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            
+            <!-- 使用说明 -->
+            <div class="note">
+                <p><strong>📝 计算公式说明：</strong></p>
+                <p>每月持有成本 = <span class="highlight">机会成本</span> + <span class="highlight">折旧成本</span> + <span class="highlight">当月利息</span></p>
+                <p>• 机会成本 = 首付金额 × 机会成本年利率 ÷ 12</p>
+                <p>• 折旧成本 = 房屋总价 × 1% ÷ 12（固定）</p>
+                <p>• 当月利息 = 等额本息当月实际利息（每月递减）</p>
+                <p>• 前N年平均持有成本 = 前N年总持有成本 ÷ (N × 12)</p>
             </div>
         </div>
         
         <div class="footer">
-            <p>© 2023 等额本息每月持有成本明细计算器 | 计算结果仅供参考</p>
+            <p>© 2023 移动端房产持有成本计算器</p>
+            <p style="margin-top: 5px;">计算结果仅供参考，实际以金融机构审批为准</p>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // DOM元素
         const totalPriceInput = document.getElementById('totalPrice');
@@ -724,11 +964,20 @@
         const downPaymentInput = document.getElementById('downPayment');
         const downPaymentSlider = document.getElementById('downPaymentSlider');
         const downPaymentPercentage = document.getElementById('downPaymentPercentage');
+        const rateLimitInput = document.getElementById('rateLimit');
+        const opportunityRateInput = document.getElementById('opportunityRate');
+        const rate1Input = document.getElementById('rate1');
+        const rate2Input = document.getElementById('rate2');
         const calculateBtn = document.getElementById('calculateBtn');
+        const resultsCard = document.getElementById('resultsCard');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const yearCountInput = document.getElementById('yearCount');
         
-        // 标签页元素
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
+        // 折叠面板元素
+        const customParamsHeader = document.getElementById('customParamsHeader');
+        const customParamsContent = document.getElementById('customParamsContent');
+        const monthlyDetailHeader = document.getElementById('monthlyDetailHeader');
+        const monthlyDetailContent = document.getElementById('monthlyDetailContent');
         
         // 错误提示元素
         const totalPriceError = document.getElementById('totalPriceError');
@@ -738,53 +987,50 @@
         const summaryTotalPrice = document.getElementById('summaryTotalPrice');
         const summaryDownPayment = document.getElementById('summaryDownPayment');
         const summaryLoanAmount = document.getElementById('summaryLoanAmount');
+        const summaryRateSplit = document.getElementById('summaryRateSplit');
         
         // 结果元素
-        const avgMonthlyCostEl = document.getElementById('avgMonthlyCost');
-        const costOpportunityEl = document.getElementById('costOpportunity');
-        const costDepreciationEl = document.getElementById('costDepreciation');
-        const costInterestAvgEl = document.getElementById('costInterestAvg');
-        const totalAvgMonthlyCostEl = document.getElementById('totalAvgMonthlyCost');
-        const firstMonthCostEl = document.getElementById('firstMonthCost');
-        const lastMonthCostEl = document.getElementById('lastMonthCost');
+        const monthlyPaymentResult = document.getElementById('monthlyPaymentResult');
+        const avgMonthlyCost = document.getElementById('avgMonthlyCost');
+        const monthlyPaymentDetail = document.getElementById('monthlyPaymentDetail');
+        const monthlyInterestDetail = document.getElementById('monthlyInterestDetail');
+        const monthlyPrincipalDetail = document.getElementById('monthlyPrincipalDetail');
+        const totalPaymentResult = document.getElementById('totalPaymentResult');
+        const avgOpportunityCost = document.getElementById('avgOpportunityCost');
+        const avgDepreciationCost = document.getElementById('avgDepreciationCost');
+        const avgInterestCost = document.getElementById('avgInterestCost');
+        const total30YearCost = document.getElementById('total30YearCost');
+        const firstMonthCost = document.getElementById('firstMonthCost');
+        const lastMonthCost = document.getElementById('lastMonthCost');
         const costReductionEl = document.getElementById('costReduction');
-        const total30YearCostEl = document.getElementById('total30YearCost');
-        const totalLoanEl = document.getElementById('totalLoan');
-        const totalInterestEl = document.getElementById('totalInterest');
-        const firstMonthInterestEl = document.getElementById('firstMonthInterest');
-        const lastMonthInterestEl = document.getElementById('lastMonthInterest');
-        const monthlyPaymentEl = document.getElementById('monthlyPayment');
         
-        // 图表和分析元素
-        const maxCostEl = document.getElementById('maxCost');
-        const minCostEl = document.getElementById('minCost');
-        const costDropEl = document.getElementById('costDrop');
-        const halfCostTimeEl = document.getElementById('halfCostTime');
-        const first10YearsPercentEl = document.getElementById('first10YearsPercent');
+        // 前N年平均成本元素
+        const yearCountDisplay = document.getElementById('yearCountDisplay');
+        const yearCountDisplay2 = document.getElementById('yearCountDisplay2');
+        const avgCostForNYears = document.getElementById('avgCostForNYears');
+        const totalCostForNYears = document.getElementById('totalCostForNYears');
+        const costPercentage = document.getElementById('costPercentage');
+        const percentageBar = document.getElementById('percentageBar');
+        const opportunityPercentage = document.getElementById('opportunityPercentage');
+        const depreciationPercentage = document.getElementById('depreciationPercentage');
+        const interestPercentage = document.getElementById('interestPercentage');
         
         // 表格元素
         const monthlyTableBody = document.getElementById('monthlyTableBody');
         const jumpToMonthInput = document.getElementById('jumpToMonth');
         const jumpBtn = document.getElementById('jumpBtn');
         
-        // 利率参数
-        const RATE1_LIMIT = 154; // 利率1的限额（万元）
-        const RATE1 = 0.026; // 年利率2.6%
-        const RATE2 = 0.0305; // 年利率3.05%
-        const OPPORTUNITY_RATE = 0.02; // 机会成本年化收益率2%
-        const DEPRECIATION_RATE = 0.01; // 年折旧率1%
+        // 全局变量
+        let monthlyData = [];
         const LOAN_TERM_YEARS = 30;
         const MONTHS_PER_YEAR = 12;
         const TOTAL_MONTHS = LOAN_TERM_YEARS * MONTHS_PER_YEAR;
-        
-        // 全局变量
-        let monthlyData = [];
-        let costChart = null;
+        const DEPRECIATION_RATE = 0.01; // 年折旧率1%
         
         // 初始化函数
         function init() {
-            // 设置标签页事件
-            setupTabs();
+            // 设置折叠面板
+            setupCollapse();
             
             // 设置时间过滤按钮事件
             setupTimeFilters();
@@ -798,35 +1044,23 @@
             // 更新首付比例
             updateDownPaymentPercentage();
             
-            // 计算并显示结果
-            calculate();
+            // 绑定输入事件
+            setupInputEvents();
+            
+            // 初始计算
+            setTimeout(calculate, 500);
         }
         
-        // 设置标签页
-        function setupTabs() {
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabId = tab.id.replace('tab-', '');
-                    
-                    // 更新活动标签
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // 显示对应内容
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === `${tabId}-content`) {
-                            content.classList.add('active');
-                        }
-                    });
-                    
-                    // 如果切换到图表标签，初始化图表
-                    if (tabId === 'chart' && monthlyData.length > 0) {
-                        setTimeout(() => {
-                            updateChart(30); // 默认显示全部30年
-                        }, 100);
-                    }
-                });
+        // 设置折叠面板
+        function setupCollapse() {
+            customParamsHeader.addEventListener('click', function() {
+                customParamsContent.classList.toggle('active');
+                this.querySelector('.collapse-arrow').classList.toggle('active');
+            });
+            
+            monthlyDetailHeader.addEventListener('click', function() {
+                monthlyDetailContent.classList.toggle('active');
+                this.querySelector('.collapse-arrow').classList.toggle('active');
             });
         }
         
@@ -840,17 +1074,6 @@
                     
                     const years = this.getAttribute('data-years');
                     updateMonthlyTable(years);
-                });
-            });
-            
-            const chartTimeBtns = document.querySelectorAll('[data-chart-years]');
-            chartTimeBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    chartTimeBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const years = parseInt(this.getAttribute('data-chart-years'));
-                    updateChart(years);
                 });
             });
         }
@@ -867,6 +1090,65 @@
                         // 高亮显示该行
                         rows.forEach(row => row.style.backgroundColor = '');
                         rows[month - 1].style.backgroundColor = '#fffacd';
+                        
+                        // 2秒后取消高亮
+                        setTimeout(() => {
+                            rows[month - 1].style.backgroundColor = '';
+                        }, 2000);
+                    }
+                }
+            });
+        }
+        
+        // 设置输入事件
+        function setupInputEvents() {
+            // 同步输入框和滑块（房屋总价）
+            totalPriceInput.addEventListener('input', function() {
+                const value = parseFloat(this.value);
+                totalPriceSlider.value = value;
+                validateTotalPrice(value);
+                updateDownPaymentPercentage();
+                updateSummary();
+            });
+            
+            totalPriceSlider.addEventListener('input', function() {
+                const value = parseFloat(this.value);
+                totalPriceInput.value = value;
+                validateTotalPrice(value);
+                updateDownPaymentPercentage();
+                updateSummary();
+            });
+            
+            // 同步输入框和滑块（首付）
+            downPaymentInput.addEventListener('input', function() {
+                const value = parseFloat(this.value);
+                downPaymentSlider.value = value;
+                validateDownPayment(value);
+                updateDownPaymentPercentage();
+                updateSummary();
+            });
+            
+            downPaymentSlider.addEventListener('input', function() {
+                const value = parseFloat(this.value);
+                downPaymentInput.value = value;
+                validateDownPayment(value);
+                updateDownPaymentPercentage();
+                updateSummary();
+            });
+            
+            // 自定义参数变化时更新摘要
+            rateLimitInput.addEventListener('input', updateSummary);
+            rate1Input.addEventListener('input', updateSummary);
+            rate2Input.addEventListener('input', updateSummary);
+            
+            // 前N年输入变化时更新结果
+            yearCountInput.addEventListener('input', function() {
+                const yearCount = parseInt(this.value);
+                if (yearCount >= 1 && yearCount <= 30) {
+                    yearCountDisplay.textContent = yearCount;
+                    yearCountDisplay2.textContent = yearCount;
+                    if (monthlyData.length > 0) {
+                        updateYearCostResults(yearCount);
                     }
                 }
             });
@@ -877,10 +1159,14 @@
             const totalPrice = parseFloat(totalPriceInput.value);
             const downPayment = parseFloat(downPaymentInput.value);
             const loanAmount = totalPrice - downPayment;
+            const rateLimit = parseFloat(rateLimitInput.value);
+            const rate1 = parseFloat(rate1Input.value);
+            const rate2 = parseFloat(rate2Input.value);
             
             summaryTotalPrice.textContent = totalPrice.toFixed(1) + ' 万元';
             summaryDownPayment.textContent = downPayment.toFixed(1) + ' 万元';
             summaryLoanAmount.textContent = loanAmount > 0 ? loanAmount.toFixed(1) + ' 万元' : '0 万元';
+            summaryRateSplit.textContent = `≤${rateLimit}万:${rate1}% >${rateLimit}万:${rate2}%`;
         }
         
         // 更新首付比例
@@ -893,40 +1179,6 @@
                 downPaymentPercentage.textContent = `首付比例：${percentage}%`;
             }
         }
-        
-        // 同步输入框和滑块（房屋总价）
-        totalPriceInput.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            totalPriceSlider.value = value;
-            validateTotalPrice(value);
-            updateDownPaymentPercentage();
-            updateSummary();
-        });
-        
-        totalPriceSlider.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            totalPriceInput.value = value;
-            validateTotalPrice(value);
-            updateDownPaymentPercentage();
-            updateSummary();
-        });
-        
-        // 同步输入框和滑块（首付）
-        downPaymentInput.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            downPaymentSlider.value = value;
-            validateDownPayment(value);
-            updateDownPaymentPercentage();
-            updateSummary();
-        });
-        
-        downPaymentSlider.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            downPaymentInput.value = value;
-            validateDownPayment(value);
-            updateDownPaymentPercentage();
-            updateSummary();
-        });
         
         // 验证房屋总价
         function validateTotalPrice(value) {
@@ -962,6 +1214,20 @@
             }
         }
         
+        // 显示加载状态
+        function showLoading() {
+            loadingIndicator.style.display = 'block';
+            calculateBtn.disabled = true;
+            calculateBtn.innerHTML = '<span class="emoji">⏳</span> 计算中...';
+        }
+        
+        // 隐藏加载状态
+        function hideLoading() {
+            loadingIndicator.style.display = 'none';
+            calculateBtn.disabled = false;
+            calculateBtn.innerHTML = '<span class="emoji">🧮</span> 开始计算';
+        }
+        
         // 计算等额本息每月还款明细（分段利率）
         function calculateAmortizationSchedule(loanAmountYuan, limitYuan, rate1, rate2) {
             // 分段计算
@@ -984,6 +1250,8 @@
             // 合并两部分
             const schedule = [];
             let totalMonthlyPayment = 0;
+            let totalInterest = 0;
+            let totalPrincipal = 0;
             
             for (let i = 0; i < TOTAL_MONTHS; i++) {
                 const month1 = schedule1[i] || { interest: 0, principal: 0, payment: 0 };
@@ -1003,17 +1271,22 @@
                 if (i === 0) {
                     totalMonthlyPayment = payment;
                 }
+                
+                totalInterest += interest;
+                totalPrincipal += principal;
             }
             
             return {
                 schedule,
-                totalMonthlyPayment
+                totalMonthlyPayment,
+                totalInterest,
+                totalPrincipal
             };
         }
         
         // 计算等额本息还款计划
         function calculateEqualPrincipalAndInterest(principal, annualRate, months) {
-            const monthlyRate = annualRate / MONTHS_PER_YEAR;
+            const monthlyRate = annualRate / 100 / MONTHS_PER_YEAR; // 转换为小数并计算月利率
             const monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
             
             const schedule = [];
@@ -1035,28 +1308,29 @@
         }
         
         // 计算每月持有成本明细
-        function calculateMonthlyCosts(totalPrice, downPayment, loanAmount) {
+        function calculateMonthlyCosts(totalPrice, downPayment, loanAmount, rateLimit, opportunityRate, rate1, rate2) {
             // 转换为元
             const totalPriceYuan = totalPrice * 10000;
             const downPaymentYuan = downPayment * 10000;
             const loanAmountYuan = loanAmount * 10000;
-            const limitYuan = RATE1_LIMIT * 10000;
+            const limitYuan = rateLimit * 10000;
             
             // 计算等额本息还款计划
-            const amortization = calculateAmortizationSchedule(loanAmountYuan, limitYuan, RATE1, RATE2);
+            const amortization = calculateAmortizationSchedule(loanAmountYuan, limitYuan, rate1, rate2);
             const schedule = amortization.schedule;
-            const totalMonthlyPayment = amortization.totalMonthlyPayment;
             
             // 计算机会成本（每月固定）
-            const monthlyOpportunityCost = downPaymentYuan * OPPORTUNITY_RATE / MONTHS_PER_YEAR;
+            const monthlyOpportunityCost = downPaymentYuan * (opportunityRate / 100) / MONTHS_PER_YEAR;
             
             // 计算折旧成本（每月固定）
             const monthlyDepreciation = totalPriceYuan * DEPRECIATION_RATE / MONTHS_PER_YEAR;
             
             // 计算每月持有成本
             const monthlyCosts = [];
-            let totalInterest = 0;
-            let cumulativeCost = 0;
+            let totalHoldingCost = 0;
+            let totalOpportunityCost = 0;
+            let totalDepreciationCost = 0;
+            let totalInterestCost = 0;
             
             for (let i = 0; i < TOTAL_MONTHS; i++) {
                 const monthData = schedule[i];
@@ -1067,31 +1341,64 @@
                 const interest = monthData.interest;
                 const holdingCost = monthlyOpportunityCost + monthlyDepreciation + interest;
                 
-                cumulativeCost += holdingCost;
-                totalInterest += interest;
+                totalHoldingCost += holdingCost;
+                totalOpportunityCost += monthlyOpportunityCost;
+                totalDepreciationCost += monthlyDepreciation;
+                totalInterestCost += interest;
                 
                 monthlyCosts.push({
                     month,
                     year,
                     monthInYear,
+                    payment: monthData.payment,
                     interest,
+                    principal: monthData.principal,
                     opportunityCost: monthlyOpportunityCost,
                     depreciation: monthlyDepreciation,
-                    holdingCost,
-                    cumulativeCost
+                    holdingCost
                 });
             }
             
-            // 计算总持有成本
-            const totalHoldingCost = monthlyCosts.reduce((sum, item) => sum + item.holdingCost, 0);
-            
             return {
                 monthlyCosts,
-                totalMonthlyPayment,
-                totalInterest,
+                totalMonthlyPayment: amortization.totalMonthlyPayment,
+                totalInterest: amortization.totalInterest,
+                totalPayment: amortization.totalMonthlyPayment * TOTAL_MONTHS,
                 monthlyOpportunityCost,
                 monthlyDepreciation,
-                totalHoldingCost
+                totalHoldingCost,
+                totalOpportunityCost,
+                totalDepreciationCost,
+                totalInterestCost
+            };
+        }
+        
+        // 计算前N年平均持有成本
+        function calculateYearCosts(monthlyData, yearCount) {
+            const months = Math.min(yearCount * MONTHS_PER_YEAR, monthlyData.length);
+            
+            let totalCost = 0;
+            let totalOpportunity = 0;
+            let totalDepreciation = 0;
+            let totalInterest = 0;
+            
+            for (let i = 0; i < months; i++) {
+                const data = monthlyData[i];
+                totalCost += data.holdingCost;
+                totalOpportunity += data.opportunityCost;
+                totalDepreciation += data.depreciation;
+                totalInterest += data.interest;
+            }
+            
+            const avgMonthlyCost = totalCost / months;
+            
+            return {
+                totalCost,
+                avgMonthlyCost,
+                totalOpportunity,
+                totalDepreciation,
+                totalInterest,
+                months
             };
         }
         
@@ -1100,15 +1407,19 @@
             if (amount >= 100000000) {
                 return (amount / 100000000).toFixed(2) + '亿';
             } else if (amount >= 10000) {
-                return (amount / 10000).toFixed(2) + '万';
+                return (amount / 10000).toFixed(1) + '万';
             } else {
-                return amount.toFixed(2) + unit;
+                return amount.toFixed(0) + unit;
             }
         }
         
-        // 格式化人民币显示
+        // 格式化人民币显示（简化版，适合移动端）
         function formatRMB(amount) {
-            return '¥' + amount.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            if (amount >= 10000) {
+                return '¥' + (amount / 10000).toFixed(1) + '万';
+            } else {
+                return '¥' + amount.toLocaleString('zh-CN', { maximumFractionDigits: 0 });
+            }
         }
         
         // 更新每月明细表格
@@ -1123,8 +1434,6 @@
                 monthsToShow = 5 * MONTHS_PER_YEAR;
             } else if (yearsFilter === '10') {
                 monthsToShow = 10 * MONTHS_PER_YEAR;
-            } else if (yearsFilter === '15') {
-                monthsToShow = 15 * MONTHS_PER_YEAR;
             } else if (yearsFilter === '1') {
                 monthsToShow = 1 * MONTHS_PER_YEAR;
             } else if (yearsFilter === 'last5') {
@@ -1136,194 +1445,115 @@
                 return;
             }
             
-            // 添加年份标题行
-            let currentYear = 0;
             for (let i = 0; i < monthsToShow; i++) {
-                const data = monthlyData[i];
-                
-                // 如果年份变化，添加年份标题行
-                if (data.year !== currentYear) {
-                    currentYear = data.year;
-                    const yearRow = document.createElement('tr');
-                    yearRow.className = 'year-header';
-                    yearRow.innerHTML = `
-                        <td colspan="8">第 ${currentYear} 年</td>
-                    `;
-                    monthlyTableBody.appendChild(yearRow);
-                }
-                
-                addRowToTable(data);
+                addRowToTable(monthlyData[i]);
             }
         }
         
-        // 添加行到表格
+        // 添加行到表格（移动端简化版）
         function addRowToTable(data) {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${data.month}</td>
                 <td>${data.year}</td>
                 <td>${data.monthInYear}</td>
+                <td>${formatRMB(data.payment)}</td>
                 <td>${formatRMB(data.interest)}</td>
-                <td>${formatRMB(data.opportunityCost)}</td>
-                <td>${formatRMB(data.depreciation)}</td>
+                <td>${formatRMB(data.principal)}</td>
                 <td>${formatRMB(data.holdingCost)}</td>
-                <td>${formatRMB(data.cumulativeCost)}</td>
             `;
             monthlyTableBody.appendChild(row);
         }
         
-        // 更新图表
-        function updateChart(years) {
+        // 更新前N年成本结果
+        function updateYearCostResults(yearCount) {
             if (monthlyData.length === 0) return;
             
-            const monthsToShow = years === 30 ? 360 : years * MONTHS_PER_YEAR;
-            const labels = [];
-            const interestData = [];
-            const holdingCostData = [];
+            const yearCosts = calculateYearCosts(monthlyData, yearCount);
             
-            for (let i = 0; i < monthsToShow; i++) {
-                labels.push(`第${i+1}月`);
-                interestData.push(monthlyData[i].interest);
-                holdingCostData.push(monthlyData[i].holdingCost);
-            }
+            // 更新显示
+            avgCostForNYears.textContent = formatRMB(yearCosts.avgMonthlyCost);
+            totalCostForNYears.textContent = formatRMB(yearCosts.totalCost);
             
-            const ctx = document.getElementById('costChart').getContext('2d');
+            // 计算占比
+            const total30YearCostValue = monthlyData.reduce((sum, item) => sum + item.holdingCost, 0);
+            const percentage = (yearCosts.totalCost / total30YearCostValue * 100).toFixed(1);
+            costPercentage.textContent = percentage + '%';
             
-            // 如果图表已存在，销毁它
-            if (costChart) {
-                costChart.destroy();
-            }
+            // 更新条形图
+            percentageBar.style.width = percentage + '%';
             
-            costChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: '当月利息',
-                            data: interestData,
-                            borderColor: '#e74c3c',
-                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1
-                        },
-                        {
-                            label: '每月持有成本',
-                            data: holdingCostData,
-                            borderColor: '#3498db',
-                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: '金额 (元)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                maxTicksLimit: 12
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += formatRMB(context.parsed.y);
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+            // 更新成本构成分布
+            const totalCost = yearCosts.totalCost;
+            const opportunityPercent = (yearCosts.totalOpportunity / totalCost * 100).toFixed(1);
+            const depreciationPercent = (yearCosts.totalDepreciation / totalCost * 100).toFixed(1);
+            const interestPercent = (yearCosts.totalInterest / totalCost * 100).toFixed(1);
             
-            // 更新趋势分析
-            updateTrendAnalysis();
-        }
-        
-        // 更新趋势分析
-        function updateTrendAnalysis() {
-            if (monthlyData.length === 0) return;
-            
-            const firstMonth = monthlyData[0];
-            const lastMonth = monthlyData[monthlyData.length - 1];
-            
-            maxCostEl.textContent = formatRMB(firstMonth.holdingCost);
-            minCostEl.textContent = formatRMB(lastMonth.holdingCost);
-            
-            const costDrop = firstMonth.holdingCost - lastMonth.holdingCost;
-            costDropEl.textContent = formatRMB(costDrop);
-            
-            // 计算持有成本减半所需时间
-            const halfCost = firstMonth.holdingCost / 2;
-            let halfCostMonth = 0;
-            for (let i = 0; i < monthlyData.length; i++) {
-                if (monthlyData[i].holdingCost <= halfCost) {
-                    halfCostMonth = monthlyData[i].month;
-                    break;
-                }
-            }
-            
-            const halfCostYears = Math.floor(halfCostMonth / 12);
-            const halfCostMonths = halfCostMonth % 12;
-            halfCostTimeEl.textContent = `${halfCostYears}年${halfCostMonths}个月`;
-            
-            // 计算前10年持有成本占比
-            const first10YearsCost = monthlyData.slice(0, 10 * MONTHS_PER_YEAR).reduce((sum, item) => sum + item.holdingCost, 0);
-            const totalCost = monthlyData.reduce((sum, item) => sum + item.holdingCost, 0);
-            const first10YearsPercent = (first10YearsCost / totalCost * 100).toFixed(1);
-            first10YearsPercentEl.textContent = `${first10YearsPercent}%`;
+            opportunityPercentage.textContent = opportunityPercent + '%';
+            depreciationPercentage.textContent = depreciationPercent + '%';
+            interestPercentage.textContent = interestPercent + '%';
         }
         
         // 执行计算
-        function calculate() {
+        async function calculate() {
             const totalPrice = parseFloat(totalPriceInput.value);
             const downPayment = parseFloat(downPaymentInput.value);
+            const rateLimit = parseFloat(rateLimitInput.value);
+            const opportunityRate = parseFloat(opportunityRateInput.value);
+            const rate1 = parseFloat(rate1Input.value);
+            const rate2 = parseFloat(rate2Input.value);
+            const yearCount = parseInt(yearCountInput.value);
             
             if (!validateTotalPrice(totalPrice) || !validateDownPayment(downPayment)) {
                 return;
             }
+            
+            // 显示加载状态
+            showLoading();
+            
+            // 使用setTimeout让UI有机会更新
+            await new Promise(resolve => setTimeout(resolve, 50));
             
             // 计算贷款金额
             const loanAmount = totalPrice - downPayment;
             
             if (loanAmount <= 0) {
                 // 全款购房的情况
+                hideLoading();
                 alert("全款购房无需贷款，持有成本仅包括机会成本和折旧成本");
                 return;
             }
             
-            // 计算每月持有成本明细
-            const result = calculateMonthlyCosts(totalPrice, downPayment, loanAmount);
-            
-            // 保存每月数据
-            monthlyData = result.monthlyCosts;
-            
-            // 更新汇总结果
-            updateSummaryResults(result, loanAmount);
-            
-            // 更新每月明细表格（默认显示前5年）
-            updateMonthlyTable('5');
-            
-            // 如果当前在图表标签，更新图表
-            if (document.getElementById('tab-chart').classList.contains('active')) {
+            try {
+                // 计算每月持有成本明细
+                const result = calculateMonthlyCosts(totalPrice, downPayment, loanAmount, rateLimit, opportunityRate, rate1, rate2);
+                
+                // 保存每月数据
+                monthlyData = result.monthlyCosts;
+                
+                // 更新汇总结果
+                updateSummaryResults(result, loanAmount);
+                
+                // 更新前N年成本结果
+                updateYearCostResults(yearCount);
+                
+                // 更新每月明细表格（默认显示前5年）
+                updateMonthlyTable('5');
+                
+                // 显示结果区域
+                resultsCard.style.display = 'block';
+                
+                // 滚动到结果区域
                 setTimeout(() => {
-                    updateChart(30);
-                }, 100);
+                    resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+                
+            } catch (error) {
+                console.error('计算错误:', error);
+                alert('计算过程中出现错误，请检查输入参数');
+            } finally {
+                // 隐藏加载状态
+                hideLoading();
             }
         }
         
@@ -1335,31 +1565,30 @@
             // 计算平均持有成本
             const avgHoldingCost = result.totalHoldingCost / TOTAL_MONTHS;
             
-            // 更新显示
-            avgMonthlyCostEl.textContent = formatRMB(avgHoldingCost);
-            costOpportunityEl.textContent = formatRMB(result.monthlyOpportunityCost);
-            costDepreciationEl.textContent = formatRMB(result.monthlyDepreciation);
-            costInterestAvgEl.textContent = formatRMB(avgInterest);
-            totalAvgMonthlyCostEl.textContent = formatRMB(avgHoldingCost);
-            
-            // 首月与末月对比
+            // 首月与末月数据
             const firstMonth = monthlyData[0];
             const lastMonth = monthlyData[monthlyData.length - 1];
             
-            firstMonthCostEl.textContent = formatRMB(firstMonth.holdingCost);
-            lastMonthCostEl.textContent = formatRMB(lastMonth.holdingCost);
+            // 每月月供相关
+            monthlyPaymentResult.textContent = formatRMB(result.totalMonthlyPayment);
+            monthlyPaymentDetail.textContent = formatRMB(result.totalMonthlyPayment);
+            monthlyInterestDetail.textContent = formatRMB(firstMonth.interest);
+            monthlyPrincipalDetail.textContent = formatRMB(firstMonth.principal);
+            totalPaymentResult.textContent = formatRMB(result.totalPayment);
             
-            const costReduction = firstMonth.holdingCost - lastMonth.holdingCost;
-            costReductionEl.textContent = formatRMB(costReduction);
+            // 平均持有成本相关
+            avgMonthlyCost.textContent = formatRMB(avgHoldingCost);
+            avgOpportunityCost.textContent = formatRMB(result.monthlyOpportunityCost);
+            avgDepreciationCost.textContent = formatRMB(result.monthlyDepreciation);
+            avgInterestCost.textContent = formatRMB(avgInterest);
+            total30YearCost.textContent = formatRMB(result.totalHoldingCost);
             
-            total30YearCostEl.textContent = formatRMB(result.totalHoldingCost);
+            // 首月与末月对比
+            firstMonthCost.textContent = formatRMB(firstMonth.holdingCost);
+            lastMonthCost.textContent = formatRMB(lastMonth.holdingCost);
             
-            // 贷款信息
-            totalLoanEl.textContent = formatCurrency(loanAmount * 10000);
-            totalInterestEl.textContent = formatCurrency(result.totalInterest);
-            firstMonthInterestEl.textContent = formatRMB(firstMonth.interest);
-            lastMonthInterestEl.textContent = formatRMB(lastMonth.interest);
-            monthlyPaymentEl.textContent = formatRMB(result.totalMonthlyPayment);
+            const costReductionValue = firstMonth.holdingCost - lastMonth.holdingCost;
+            costReductionEl.textContent = formatRMB(costReductionValue);
         }
         
         // 绑定计算按钮事件
@@ -1368,11 +1597,47 @@
         // 页面加载时初始化
         window.addEventListener('load', init);
         
-        // 输入变化时自动计算
-        totalPriceInput.addEventListener('change', calculate);
-        downPaymentInput.addEventListener('change', calculate);
-        totalPriceSlider.addEventListener('change', calculate);
-        downPaymentSlider.addEventListener('change', calculate);
+        // 防抖函数，用于输入变化时的自动计算
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // 输入变化时自动计算（防抖处理，避免频繁计算）
+        const debouncedCalculate = debounce(calculate, 800);
+        
+        // 监听输入变化（不包括滑块，避免拖动时频繁计算）
+        const autoCalculateInputs = [
+            totalPriceInput, downPaymentInput,
+            rateLimitInput, opportunityRateInput,
+            rate1Input, rate2Input, yearCountInput
+        ];
+        
+        autoCalculateInputs.forEach(input => {
+            input.addEventListener('input', debouncedCalculate);
+        });
+        
+        // 滑块变化时只更新显示，不自动计算
+        totalPriceSlider.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            totalPriceInput.value = value;
+            updateDownPaymentPercentage();
+            updateSummary();
+        });
+        
+        downPaymentSlider.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            downPaymentInput.value = value;
+            updateDownPaymentPercentage();
+            updateSummary();
+        });
     </script>
 </body>
 </html>
