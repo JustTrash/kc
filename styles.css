@@ -220,3 +220,290 @@
 .project-detail-call{border:1px solid var(--navy);color:var(--navy)}
 .project-detail-call:hover{background:var(--navy);color:#fff}
 @media(max-width:700px){.project-detail-modal{padding:0}.project-detail-panel{width:100%;height:100vh}.project-detail-scroll{padding:27px 20px 35px}.project-detail-body{font-size:13px}.project-detail-body>p:first-child{font-size:14px}.project-detail-body h3{font-size:19px}.condition-block{grid-template-columns:1fr;gap:5px}.project-detail-actions{display:grid;grid-template-columns:1fr 1fr}.project-detail-actions .qr-action,.project-detail-actions .qr-action>.btn,.project-detail-call{width:100%;min-width:0}.project-detail-actions .btn{padding:10px 8px;font-size:12px}}
+
+/* Midnight blue and champagne theme. */
+:root{
+  --navy:#111b31;
+  --deep:#070b16;
+  --blue:#24395e;
+  --gold:#c5a46a;
+  --gold2:#ead7ad;
+  --paper:#f4f1ea;
+  --ink:#1b2433;
+  --muted:#687284;
+  --line:#d9d6cf;
+}
+body{overflow-x:hidden;background:linear-gradient(135deg,#f8f6f1 0%,#eef1f5 52%,#f5f1e8 100%);background-attachment:fixed}
+.site-header{background:linear-gradient(105deg,rgba(255,255,255,.96),rgba(242,239,232,.93));border-bottom-color:rgba(17,27,49,.1);box-shadow:0 8px 30px rgba(7,11,22,.05)}
+.hero{background:linear-gradient(135deg,var(--deep),var(--blue))}
+.hero-slide{background-image:linear-gradient(90deg,rgba(5,9,20,.94) 0%,rgba(13,23,43,.72) 45%,rgba(9,14,28,.18) 76%),var(--bg)}
+.brand-hero{background-image:radial-gradient(circle at 78% 38%,rgba(197,164,106,.24),transparent 17%),radial-gradient(circle at 78% 38%,transparent 0 25%,rgba(234,215,173,.1) 25.2% 25.5%,transparent 25.7%),linear-gradient(125deg,#070b16 0%,#15233e 58%,#2b4166 100%)}
+.placeholder-slide{background-image:radial-gradient(circle at 76% 42%,rgba(197,164,106,.24),transparent 18%),linear-gradient(120deg,#080d1a,#213657 68%,#0a1020)}
+.quick-links{background:linear-gradient(120deg,rgba(255,255,255,.98),rgba(246,242,233,.97));box-shadow:0 22px 60px rgba(7,11,22,.13)}
+.quick-links a:hover{background:linear-gradient(135deg,#111b31,#293e62)}
+.projects:before{background:radial-gradient(circle at 12% 12%,rgba(197,164,106,.12),transparent 29%),radial-gradient(circle at 88% 70%,rgba(36,57,94,.1),transparent 27%)}
+.project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(237,239,243,.98))}
+.project-card[data-category="education"]:not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,#fffcf5,#eee7d9)}
+.cies-card{background:radial-gradient(circle at 84% 18%,rgba(197,164,106,.2),transparent 30%),linear-gradient(145deg,#fffaf0,#edf0f4)}
+.renewal-card{background:radial-gradient(circle at 84% 18%,rgba(36,57,94,.16),transparent 30%),linear-gradient(145deg,#f8fafc,#eee9df)}
+.education{background:radial-gradient(circle at 8% 12%,rgba(197,164,106,.14),transparent 27%),linear-gradient(128deg,#080d1a 0%,#15233e 56%,#263b5e 100%)}
+.education-visual{background:linear-gradient(145deg,#faf8f3,#e8e9ed)}
+.education-visual img{filter:saturate(.78) contrast(1.03)}
+.about{position:relative}
+.about:before{content:"";position:absolute;z-index:-1;inset:45px -5vw;background:linear-gradient(120deg,rgba(255,255,255,.54),rgba(231,234,240,.5));border:1px solid rgba(17,27,49,.055)}
+.advantages{background:linear-gradient(125deg,rgba(7,11,22,.96),rgba(24,38,65,.93)),url('assets/company6.jpg') center/cover fixed}
+.adv-grid article:hover{background:linear-gradient(145deg,rgba(197,164,106,.22),rgba(255,255,255,.04))}
+.office{background:linear-gradient(130deg,#eee8dd,#f7f5f0 50%,#e7eaf0)}
+.office>.service-journey{background:radial-gradient(circle at 92% 8%,rgba(197,164,106,.14),transparent 26%),linear-gradient(145deg,#080d1a 0%,#1b2d4c 100%)}
+.journey-steps article{background:linear-gradient(145deg,#14233c,#1d3150)}
+.journey-steps article:hover{background:linear-gradient(145deg,#273e62,#354e73)}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.72),rgba(235,229,217,.75))}
+footer{background:linear-gradient(135deg,#050812,#10192d 62%,#1b2c48)}
+.detail-toolbar{background:linear-gradient(110deg,#0a1020,#263b5e)}
+.project-detail-scroll{background:linear-gradient(145deg,#fbfaf6,#eceff3)}
+
+@media(min-width:801px){
+  .education{align-items:center;padding:54px max(4vw,48px);gap:max(3vw,36px);min-height:660px}
+  .education-copy{width:100%;max-width:650px;justify-self:end;padding:34px clamp(38px,4vw,66px);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(234,215,173,.2);box-shadow:0 24px 70px rgba(2,5,12,.22)}
+  .education-visual{width:100%;max-width:650px;height:550px;justify-self:start;box-shadow:0 24px 70px rgba(2,5,12,.24)}
+  .education h2{font-size:clamp(32px,2.7vw,45px)}
+  .education-copy>p:not(.eyebrow){font-size:14px}
+  .edu-points{margin:28px 0;gap:14px}
+}
+
+@media(max-width:800px){
+  body{background:linear-gradient(150deg,#faf8f3,#eef1f5)}
+  .main-nav{background:linear-gradient(135deg,#fff,#f3efe7)}
+  .about:before{inset:20px -10px}
+}
+
+/* Deeper graphite-navy surfaces. */
+body{color:#dfe5ee;background:radial-gradient(circle at 12% 18%,rgba(49,72,112,.34),transparent 30%),radial-gradient(circle at 88% 58%,rgba(197,164,106,.11),transparent 24%),linear-gradient(145deg,#070b14 0%,#0d1526 48%,#111b2d 100%)}
+.site-header{background:linear-gradient(105deg,rgba(7,11,20,.97),rgba(18,28,48,.95));border-bottom-color:rgba(234,215,173,.14);box-shadow:0 10px 38px rgba(0,0,0,.28)}
+.site-header .brand strong,.site-header .main-nav a,.site-header .hotline b{color:#eef1f6}
+.site-header .brand small,.site-header .hotline small{color:#8894a8}
+.site-header .menu-toggle span{background:var(--gold2)}
+.quick-links{background:linear-gradient(125deg,rgba(16,25,43,.98),rgba(27,41,66,.98));border:1px solid rgba(234,215,173,.12);box-shadow:0 24px 65px rgba(0,0,0,.35)}
+.quick-links a{border-right-color:rgba(234,215,173,.11)}
+.quick-links b{color:#eef1f6}
+.quick-links small{color:#8d98aa}
+.projects{color:#dce2eb}
+.section-heading h2,.projects .filter-tabs button.active{color:#f0f2f6}
+.section-heading>p,.projects .filter-tabs button{color:#919bad}
+.filter-tabs{border-bottom-color:rgba(234,215,173,.16)}
+.projects:before{background:radial-gradient(circle at 12% 12%,rgba(197,164,106,.14),transparent 29%),radial-gradient(circle at 88% 70%,rgba(62,89,135,.2),transparent 29%)}
+.projects .project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,rgba(23,34,55,.98),rgba(12,20,35,.99));border-color:rgba(234,215,173,.12);box-shadow:0 14px 38px rgba(0,0,0,.22)}
+.projects .project-card[data-category="education"]:not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:radial-gradient(circle at 85% 14%,rgba(197,164,106,.12),transparent 30%),linear-gradient(145deg,#1c2a43,#101827)}
+.projects .cies-card{background:radial-gradient(circle at 84% 18%,rgba(197,164,106,.18),transparent 30%),linear-gradient(145deg,#202b3e,#111827)}
+.projects .renewal-card{background:radial-gradient(circle at 84% 18%,rgba(66,92,137,.2),transparent 30%),linear-gradient(145deg,#1a2942,#101722)}
+.projects .project-card h3,.projects .detail-entry{color:#edf0f5}
+.projects .project-card p{color:#a4adbc}
+.projects .detail-entry{border-top-color:rgba(234,215,173,.14)}
+.projects .tags i{color:#dbc495;background:rgba(197,164,106,.1);border-color:rgba(234,215,173,.2)}
+.about{color:#dce2eb}
+.about:before{background:radial-gradient(circle at 12% 20%,rgba(197,164,106,.09),transparent 26%),linear-gradient(120deg,rgba(21,32,52,.9),rgba(10,17,30,.94));border-color:rgba(234,215,173,.09);box-shadow:0 24px 70px rgba(0,0,0,.18)}
+.about-copy h2{color:#f0f2f6}
+.about-copy p,.about-copy .lead{color:#a8b1bf}
+.about-copy blockquote{color:var(--gold2)}
+.text-link{color:#e6d4aa;border-bottom-color:rgba(234,215,173,.55)}
+.office{background:linear-gradient(132deg,#090f1c 0%,#121d31 52%,#18253b 100%)}
+.office h2{color:#f0f2f6}
+.office>div>p:not(.eyebrow){color:#a5afbd}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.055),rgba(197,164,106,.07));border-top:1px solid rgba(234,215,173,.1);border-right:1px solid rgba(234,215,173,.1);border-bottom:1px solid rgba(234,215,173,.1)}
+.contact-note span,.contact-note small{color:#929daf}
+.contact-note strong{color:var(--gold2)}
+.btn-wechat{border-color:rgba(234,215,173,.55);color:#ead7ad}
+.btn-wechat:hover,.btn-wechat:focus-visible{background:var(--gold);border-color:var(--gold);color:#101827}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 15% 12%,rgba(49,72,112,.3),transparent 28%),linear-gradient(150deg,#070b14,#111b2d)}
+  .main-nav{background:linear-gradient(145deg,#0b1220,#17243a)}
+  .main-nav a{border-bottom-color:rgba(234,215,173,.12)}
+  .quick-links{border-width:0 0 1px}
+  .quick-links a{border-bottom-color:rgba(234,215,173,.11)}
+  .about:before{inset:20px -10px}
+}
+
+/* Balanced mid-tone blue gradient. */
+body{background:radial-gradient(circle at 12% 16%,rgba(111,139,181,.28),transparent 32%),radial-gradient(circle at 88% 62%,rgba(197,164,106,.14),transparent 27%),linear-gradient(140deg,#182840 0%,#2b4262 48%,#1d304d 100%)}
+.site-header{background:linear-gradient(105deg,rgba(20,33,54,.96),rgba(35,53,81,.94));border-bottom-color:rgba(234,215,173,.18);box-shadow:0 10px 34px rgba(7,13,24,.2)}
+.quick-links{background:linear-gradient(125deg,rgba(35,53,81,.98),rgba(49,72,105,.98));border-color:rgba(234,215,173,.17);box-shadow:0 22px 55px rgba(7,13,24,.25)}
+.quick-links a{border-right-color:rgba(234,215,173,.15)}
+.projects:before{background:radial-gradient(circle at 12% 12%,rgba(234,215,173,.13),transparent 30%),radial-gradient(circle at 88% 70%,rgba(115,148,194,.22),transparent 30%)}
+.projects .project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,rgba(46,66,96,.98),rgba(30,47,74,.99));border-color:rgba(234,215,173,.17);box-shadow:0 14px 34px rgba(8,15,28,.18)}
+.projects .project-card[data-category="education"]:not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:radial-gradient(circle at 85% 14%,rgba(234,215,173,.15),transparent 30%),linear-gradient(145deg,#354b6b,#223752)}
+.projects .cies-card{background:radial-gradient(circle at 84% 18%,rgba(234,215,173,.2),transparent 31%),linear-gradient(145deg,#3b4d68,#273b57)}
+.projects .renewal-card{background:radial-gradient(circle at 84% 18%,rgba(124,157,202,.22),transparent 31%),linear-gradient(145deg,#354d70,#223650)}
+.about:before{background:radial-gradient(circle at 12% 20%,rgba(234,215,173,.11),transparent 28%),linear-gradient(120deg,rgba(42,62,91,.94),rgba(27,44,69,.96));border-color:rgba(234,215,173,.14);box-shadow:0 22px 60px rgba(8,15,28,.16)}
+.office{background:linear-gradient(132deg,#182942 0%,#2c4464 52%,#354e6d 100%)}
+.office>.service-journey{background:radial-gradient(circle at 92% 8%,rgba(234,215,173,.16),transparent 27%),linear-gradient(145deg,#172943 0%,#345173 100%)}
+.journey-steps article{background:linear-gradient(145deg,#294363,#355577)}
+.journey-steps article:hover{background:linear-gradient(145deg,#3c5c7f,#4b6b8d)}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.09),rgba(234,215,173,.1));border-color:rgba(234,215,173,.16)}
+footer{background:linear-gradient(135deg,#111f35,#223957 62%,#304b6b)}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 15% 12%,rgba(111,139,181,.25),transparent 30%),linear-gradient(150deg,#192a44,#2d4667)}
+  .main-nav{background:linear-gradient(145deg,#1c304d,#345171)}
+  .main-nav a{border-bottom-color:rgba(234,215,173,.16)}
+}
+
+/* Bright pearl, warm greige and champagne palette. */
+body{color:#3d3a35;background:radial-gradient(circle at 10% 18%,rgba(221,196,148,.24),transparent 31%),radial-gradient(circle at 88% 64%,rgba(190,176,151,.2),transparent 28%),linear-gradient(140deg,#fbfaf6 0%,#f1ede5 48%,#f7f4ed 100%)}
+.site-header{background:linear-gradient(105deg,rgba(255,255,255,.97),rgba(245,240,231,.95));border-bottom-color:rgba(122,101,65,.13);box-shadow:0 9px 30px rgba(66,54,36,.08)}
+.site-header .brand strong,.site-header .main-nav a,.site-header .hotline b{color:#303238}
+.site-header .brand small,.site-header .hotline small{color:#8c877e}
+.site-header .menu-toggle span{background:#756344}
+.hero-slide{background-image:linear-gradient(90deg,rgba(35,31,27,.88) 0%,rgba(67,57,46,.57) 46%,rgba(59,48,38,.08) 78%),var(--bg)}
+.brand-hero{background-image:radial-gradient(circle at 78% 38%,rgba(241,218,169,.34),transparent 18%),radial-gradient(circle at 78% 38%,transparent 0 25%,rgba(255,246,225,.2) 25.2% 25.5%,transparent 25.7%),linear-gradient(125deg,#51483e 0%,#8d7657 58%,#b99a69 100%)}
+.placeholder-slide{background-image:radial-gradient(circle at 76% 42%,rgba(245,220,169,.34),transparent 19%),linear-gradient(120deg,#50483e,#927b5d 68%,#675746)}
+.quick-links{background:linear-gradient(125deg,rgba(255,255,255,.99),rgba(244,238,227,.98));border-color:rgba(122,101,65,.12);box-shadow:0 20px 48px rgba(66,54,36,.12)}
+.quick-links a{border-right-color:rgba(122,101,65,.12)}
+.quick-links b{color:#373532}
+.quick-links small{color:#918b80}
+.quick-links a:hover{background:linear-gradient(135deg,#8b7555,#b09265)}
+.projects{color:#48443d}
+.section-heading h2,.projects .filter-tabs button.active{color:#383733}
+.section-heading>p,.projects .filter-tabs button{color:#817c73}
+.filter-tabs{border-bottom-color:rgba(122,101,65,.17)}
+.projects:before{background:radial-gradient(circle at 12% 12%,rgba(210,180,124,.16),transparent 30%),radial-gradient(circle at 88% 70%,rgba(180,169,148,.16),transparent 30%)}
+.projects .project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,rgba(255,255,255,.99),rgba(239,234,224,.98));border-color:rgba(122,101,65,.13);box-shadow:0 13px 32px rgba(66,54,36,.08)}
+.projects .project-card[data-category="education"]:not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:radial-gradient(circle at 85% 14%,rgba(210,180,124,.16),transparent 30%),linear-gradient(145deg,#fffdf8,#eee7da)}
+.projects .cies-card{background:radial-gradient(circle at 84% 18%,rgba(210,180,124,.2),transparent 31%),linear-gradient(145deg,#fffaf0,#ece5d8)}
+.projects .renewal-card{background:radial-gradient(circle at 84% 18%,rgba(173,163,143,.16),transparent 31%),linear-gradient(145deg,#fbfaf7,#ece8df)}
+.projects .project-card h3,.projects .detail-entry{color:#3b3935}
+.projects .project-card p{color:#77736c}
+.projects .detail-entry{border-top-color:rgba(122,101,65,.14)}
+.projects .tags i{color:#806a45;background:rgba(210,180,124,.12);border-color:rgba(154,126,78,.2)}
+.about{color:#48443d}
+.about:before{background:radial-gradient(circle at 12% 20%,rgba(210,180,124,.14),transparent 28%),linear-gradient(120deg,rgba(255,255,255,.82),rgba(235,229,217,.88));border-color:rgba(122,101,65,.1);box-shadow:0 20px 52px rgba(66,54,36,.08)}
+.about-copy h2{color:#393733}
+.about-copy p,.about-copy .lead{color:#726e67}
+.about-copy blockquote{color:#9b7a42}
+.text-link{color:#705d3d;border-bottom-color:rgba(112,93,61,.5)}
+.education{background:radial-gradient(circle at 8% 12%,rgba(240,215,164,.2),transparent 28%),linear-gradient(128deg,#494239 0%,#71614e 56%,#9b805d 100%)}
+.education-copy{color:#fff}
+.education-copy>p:not(.eyebrow),.edu-points small{color:rgba(255,255,255,.72)}
+.advantages{background:radial-gradient(circle at 12% 18%,rgba(255,255,255,.72),transparent 27%),radial-gradient(circle at 88% 76%,rgba(188,145,76,.2),transparent 28%),linear-gradient(128deg,#e5d4b5 0%,#f8f2e7 48%,#dcc7a2 100%)}
+.office{background:linear-gradient(132deg,#eee8dc 0%,#faf8f3 52%,#e9e1d4 100%)}
+.office>.service-journey{background:radial-gradient(circle at 92% 8%,rgba(240,215,164,.19),transparent 27%),linear-gradient(145deg,#585047 0%,#8d7558 100%)}
+.office>.service-journey h2{color:#fff}
+.journey-steps article{background:linear-gradient(145deg,#6d604f,#867258)}
+.journey-steps article:hover{background:linear-gradient(145deg,#8b7659,#a58b64)}
+.office h2{color:#393733}
+.office>div>p:not(.eyebrow){color:#746f67}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.72),rgba(226,211,183,.42));border-color:rgba(122,101,65,.14)}
+.contact-note span,.contact-note small{color:#817a6e}
+.contact-note strong{color:#6c5838}
+.btn-wechat{border-color:#7b6746;color:#6c5838}
+.btn-wechat:hover,.btn-wechat:focus-visible{background:#806a45;border-color:#806a45;color:#fff}
+footer{background:linear-gradient(135deg,#37332d,#51483d 62%,#6c5a46)}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 15% 12%,rgba(221,196,148,.22),transparent 30%),linear-gradient(150deg,#fbfaf6,#eee8dc)}
+  .main-nav{background:linear-gradient(145deg,#fff,#f1eadf)}
+  .main-nav a{border-bottom-color:rgba(122,101,65,.13)}
+}
+
+/* Airier highlights and layered champagne details. */
+body{background:radial-gradient(circle at 8% 14%,rgba(231,198,137,.2),transparent 27%),radial-gradient(circle at 92% 45%,rgba(214,198,168,.22),transparent 26%),radial-gradient(circle at 48% 82%,rgba(255,255,255,.8),transparent 32%),linear-gradient(138deg,#fffefa 0%,#f7f1e7 48%,#fcfaf5 100%)}
+.site-header{background:linear-gradient(105deg,rgba(255,255,255,.985),rgba(249,245,237,.965));box-shadow:0 8px 26px rgba(89,70,40,.07)}
+.quick-links{position:relative;overflow:hidden;background:radial-gradient(circle at 10% 0%,rgba(225,194,137,.16),transparent 28%),linear-gradient(125deg,#fff,#f7f0e4);box-shadow:0 18px 44px rgba(89,70,40,.1)}
+.quick-links:before{content:"";position:absolute;z-index:2;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#c5a46a 22%,#ead7ad 50%,#c5a46a 78%,transparent)}
+.projects:before{background:radial-gradient(circle at 8% 12%,rgba(223,188,124,.18),transparent 28%),radial-gradient(circle at 90% 67%,rgba(205,190,163,.2),transparent 29%),linear-gradient(135deg,rgba(255,255,255,.28),rgba(238,229,213,.2))}
+.projects .project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:radial-gradient(circle at 100% 0%,rgba(225,194,137,.11),transparent 27%),linear-gradient(145deg,#fff,#f3ede3);box-shadow:0 15px 36px rgba(89,70,40,.085)}
+.projects .project-card:hover{box-shadow:0 22px 48px rgba(89,70,40,.14)}
+.about:before{background:radial-gradient(circle at 10% 16%,rgba(229,196,137,.17),transparent 26%),radial-gradient(circle at 90% 82%,rgba(255,255,255,.9),transparent 30%),linear-gradient(120deg,rgba(255,255,255,.92),rgba(241,233,218,.9));box-shadow:0 18px 46px rgba(89,70,40,.07)}
+.education{background:radial-gradient(circle at 8% 12%,rgba(255,255,255,.5),transparent 27%),radial-gradient(circle at 90% 85%,rgba(175,130,62,.15),transparent 26%),linear-gradient(128deg,#dbc49d 0%,#f0e1c7 52%,#cdb184 100%);color:#403a32}
+.education-copy{color:#403a32;background:linear-gradient(145deg,rgba(255,255,255,.32),rgba(255,255,255,.1));border-color:rgba(113,88,49,.18);box-shadow:0 22px 58px rgba(92,69,34,.12)}
+.education .eyebrow{color:#80663e}
+.education-copy>p:not(.eyebrow),.edu-points small{color:#6e6252}
+.edu-points span{border-left-color:rgba(92,69,34,.2)}
+.education-visual{box-shadow:0 22px 58px rgba(92,69,34,.14)}
+.advantages{position:relative;overflow:hidden;color:#443d33;background:radial-gradient(circle at 10% 12%,rgba(255,255,255,.78),transparent 27%),radial-gradient(circle at 90% 82%,rgba(181,137,67,.2),transparent 28%),linear-gradient(128deg,#e8d8bb 0%,#fbf7ef 48%,#dec8a4 100%)}
+.advantages:before,.advantages:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.advantages:before{width:360px;height:360px;right:-140px;top:-150px;border:1px solid rgba(139,105,55,.16);box-shadow:0 0 0 38px rgba(255,255,255,.13)}
+.advantages:after{width:190px;height:190px;left:4%;bottom:-105px;background:radial-gradient(circle,rgba(255,255,255,.52),rgba(255,255,255,0) 68%)}
+.advantages .section-heading,.advantages .adv-grid{position:relative;z-index:1}
+.advantages .section-heading.light h2{color:#403a32}
+.advantages .section-heading.light>p,.advantages .adv-grid p{color:#746858}
+.advantages .eyebrow{color:#8b6e3c}
+.advantages .adv-grid{border-color:rgba(104,78,39,.18);box-shadow:0 20px 52px rgba(92,69,34,.09)}
+.advantages .adv-grid article{border-right-color:rgba(104,78,39,.16);background:rgba(255,255,255,.2)}
+.advantages .adv-grid article:hover{background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(229,202,155,.35))}
+.advantages .adv-grid h3{color:#443d33}
+.advantages .adv-grid b{color:#92713d}
+.office{background:radial-gradient(circle at 90% 15%,rgba(255,255,255,.72),transparent 27%),linear-gradient(132deg,#f3ecdf 0%,#fffdf8 52%,#eadfcd 100%)}
+.office-contact .contact-note{box-shadow:0 13px 34px rgba(89,70,40,.07)}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 15% 12%,rgba(225,194,137,.19),transparent 28%),linear-gradient(150deg,#fffefa,#f3ecdf)}
+  .advantages .adv-grid article{border-right-color:rgba(104,78,39,.14);border-bottom-color:rgba(104,78,39,.14)}
+}
+
+/* Luminous champagne with soft sage and blush accents. */
+body{background:radial-gradient(circle at 7% 13%,rgba(221,235,222,.7),transparent 27%),radial-gradient(circle at 92% 38%,rgba(246,220,213,.6),transparent 25%),radial-gradient(circle at 50% 82%,rgba(235,204,145,.2),transparent 29%),linear-gradient(138deg,#fff 0%,#fffaf2 47%,#fdfcf8 100%)}
+.site-header{background:linear-gradient(108deg,rgba(255,255,255,.99),rgba(250,247,238,.975) 54%,rgba(246,238,235,.965));border-bottom-color:rgba(154,126,78,.11)}
+.quick-links{background:linear-gradient(120deg,#fff 0%,#f8f3e8 48%,#f4f8f3 100%);box-shadow:0 17px 40px rgba(93,73,42,.085)}
+.quick-links a:nth-child(1){background:linear-gradient(135deg,rgba(255,255,255,.48),rgba(246,222,214,.2))}
+.quick-links a:nth-child(2){background:linear-gradient(135deg,rgba(255,255,255,.48),rgba(217,233,219,.3))}
+.quick-links a:nth-child(3){background:linear-gradient(135deg,rgba(255,255,255,.48),rgba(239,217,173,.24))}
+.quick-links a:hover{background:linear-gradient(135deg,#b99a69,#d0b47d);color:#fff}
+.projects:before{background:radial-gradient(circle at 8% 10%,rgba(218,234,219,.52),transparent 28%),radial-gradient(circle at 91% 38%,rgba(245,218,211,.48),transparent 27%),radial-gradient(circle at 70% 88%,rgba(235,204,145,.18),transparent 25%)}
+.projects .project-card:not(.featured):not(.material-card):not(.wide):not(.image-card):not(.postgraduate-card){background:linear-gradient(145deg,#fff 0%,#faf6ee 100%);border-color:rgba(145,117,69,.11);box-shadow:0 14px 34px rgba(93,73,42,.07)}
+.projects .project-card:nth-child(3n+1):not(.no-image-project){background:radial-gradient(circle at 100% 0%,rgba(246,220,213,.35),transparent 31%),linear-gradient(145deg,#fff,#fbf7f0)}
+.projects .project-card:nth-child(3n+2):not(.no-image-project){background:radial-gradient(circle at 100% 0%,rgba(218,234,219,.42),transparent 31%),linear-gradient(145deg,#fff,#f7f5ed)}
+.projects .project-card:nth-child(3n):not(.no-image-project){background:radial-gradient(circle at 100% 0%,rgba(236,211,164,.32),transparent 31%),linear-gradient(145deg,#fff,#faf5eb)}
+.projects .cies-card{background:radial-gradient(circle at 85% 15%,rgba(245,217,209,.38),transparent 31%),linear-gradient(145deg,#fff,#f7eee7)}
+.projects .renewal-card{background:radial-gradient(circle at 85% 15%,rgba(214,232,216,.48),transparent 31%),linear-gradient(145deg,#fff,#eef5ee)}
+.about:before{background:radial-gradient(circle at 8% 15%,rgba(218,234,219,.5),transparent 27%),radial-gradient(circle at 92% 78%,rgba(245,218,211,.4),transparent 29%),linear-gradient(120deg,rgba(255,255,255,.96),rgba(249,243,233,.92));box-shadow:0 17px 42px rgba(93,73,42,.06)}
+.education{background:radial-gradient(circle at 6% 10%,rgba(255,255,255,.68),transparent 28%),radial-gradient(circle at 92% 82%,rgba(217,234,219,.55),transparent 28%),linear-gradient(128deg,#ead8b7 0%,#fbf5e9 50%,#d8e4d7 100%)}
+.education-copy{background:linear-gradient(145deg,rgba(255,255,255,.52),rgba(255,255,255,.2));border-color:rgba(117,93,54,.14);box-shadow:0 20px 48px rgba(93,73,42,.09)}
+.education-visual{background:linear-gradient(145deg,#fff,#f6f1e8);box-shadow:0 20px 48px rgba(93,73,42,.1)}
+.advantages{background:radial-gradient(circle at 9% 12%,rgba(255,255,255,.88),transparent 27%),radial-gradient(circle at 88% 18%,rgba(245,216,209,.52),transparent 26%),radial-gradient(circle at 86% 88%,rgba(213,231,215,.62),transparent 29%),linear-gradient(128deg,#efdfc2 0%,#fffaf2 48%,#e6eee4 100%)}
+.advantages .adv-grid article:nth-child(1){background:linear-gradient(145deg,rgba(255,255,255,.45),rgba(244,220,213,.22))}
+.advantages .adv-grid article:nth-child(2){background:linear-gradient(145deg,rgba(255,255,255,.45),rgba(215,232,217,.28))}
+.advantages .adv-grid article:nth-child(3){background:linear-gradient(145deg,rgba(255,255,255,.45),rgba(237,213,170,.2))}
+.advantages .adv-grid article:nth-child(4){background:linear-gradient(145deg,rgba(255,255,255,.45),rgba(235,222,232,.2))}
+.office{background:radial-gradient(circle at 92% 14%,rgba(245,218,211,.5),transparent 27%),radial-gradient(circle at 56% 86%,rgba(215,232,217,.44),transparent 26%),linear-gradient(132deg,#f8f1e5 0%,#fff 52%,#f2f5ee 100%)}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.84),rgba(221,234,219,.38));box-shadow:0 12px 30px rgba(93,73,42,.055)}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 12% 10%,rgba(218,234,219,.55),transparent 27%),radial-gradient(circle at 88% 40%,rgba(245,218,211,.42),transparent 25%),linear-gradient(150deg,#fff,#fff8ee)}
+}
+
+/* Section-led pearl, champagne, blush and mist-lilac layers. */
+body{background:radial-gradient(circle at 8% 14%,rgba(246,220,213,.5),transparent 27%),radial-gradient(circle at 92% 54%,rgba(226,219,235,.48),transparent 28%),linear-gradient(138deg,#fff 0%,#fff9f1 50%,#fdfaf7 100%)}
+.quick-links{background:radial-gradient(circle at 8% 10%,rgba(245,218,211,.38),transparent 28%),linear-gradient(120deg,#fff 0%,#faf3e7 52%,#f7f0eb 100%)}
+.quick-links a:nth-child(1){background:linear-gradient(135deg,rgba(255,255,255,.56),rgba(247,222,215,.24))}
+.quick-links a:nth-child(2){background:linear-gradient(135deg,rgba(255,255,255,.56),rgba(232,221,239,.3))}
+.quick-links a:nth-child(3){background:linear-gradient(135deg,rgba(255,255,255,.56),rgba(239,213,166,.26))}
+.projects{background:radial-gradient(circle at 7% 12%,rgba(247,221,214,.42),transparent 27%),radial-gradient(circle at 94% 58%,rgba(228,220,237,.42),transparent 28%),linear-gradient(145deg,rgba(255,255,255,.7),rgba(252,246,237,.72));box-shadow:0 0 0 1px rgba(139,108,62,.045),0 24px 70px rgba(105,77,39,.045)}
+.projects:before{background:radial-gradient(circle at 8% 10%,rgba(247,221,214,.44),transparent 28%),radial-gradient(circle at 91% 40%,rgba(227,219,236,.42),transparent 27%),radial-gradient(circle at 70% 88%,rgba(235,204,145,.18),transparent 25%)}
+.projects .project-card:nth-child(3n+2):not(.no-image-project){background:radial-gradient(circle at 100% 0%,rgba(229,220,238,.4),transparent 31%),linear-gradient(145deg,#fff,#f8f3f4)}
+.projects .renewal-card{background:radial-gradient(circle at 85% 15%,rgba(229,219,238,.46),transparent 31%),linear-gradient(145deg,#fff,#f4eff6)}
+.about:before{background:radial-gradient(circle at 8% 15%,rgba(228,219,237,.48),transparent 27%),radial-gradient(circle at 92% 78%,rgba(246,219,212,.42),transparent 29%),linear-gradient(120deg,rgba(255,255,255,.97),rgba(248,242,236,.94));border-top:1px solid rgba(156,126,82,.08);border-bottom:1px solid rgba(156,126,82,.08)}
+.education{border-top:1px solid rgba(142,105,52,.11);border-bottom:1px solid rgba(142,105,52,.13);background:radial-gradient(circle at 7% 12%,rgba(255,255,255,.72),transparent 27%),radial-gradient(circle at 92% 82%,rgba(243,209,202,.5),transparent 29%),linear-gradient(128deg,#ead5af 0%,#fff7e9 50%,#e8d9d8 100%)}
+.education-copy{background:radial-gradient(circle at 100% 0%,rgba(228,219,237,.25),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.58),rgba(255,255,255,.2))}
+.advantages{border-top:1px solid rgba(142,105,52,.1);border-bottom:1px solid rgba(142,105,52,.12);background:radial-gradient(circle at 9% 12%,rgba(255,255,255,.9),transparent 27%),radial-gradient(circle at 88% 18%,rgba(245,216,209,.56),transparent 26%),radial-gradient(circle at 86% 88%,rgba(228,218,237,.52),transparent 29%),linear-gradient(128deg,#efddbd 0%,#fff9ef 48%,#eee3e8 100%)}
+.advantages .adv-grid article:nth-child(2){background:linear-gradient(145deg,rgba(255,255,255,.48),rgba(229,220,238,.3))}
+.advantages .adv-grid article:nth-child(4){background:linear-gradient(145deg,rgba(255,255,255,.48),rgba(245,218,211,.26))}
+.office{border-top:1px solid rgba(142,105,52,.09);background:radial-gradient(circle at 92% 14%,rgba(245,218,211,.5),transparent 27%),radial-gradient(circle at 58% 88%,rgba(228,219,237,.4),transparent 27%),linear-gradient(132deg,#f8efe1 0%,#fff 52%,#f5eef1 100%)}
+.office-contact .contact-note{background:linear-gradient(120deg,rgba(255,255,255,.86),rgba(231,220,238,.34))}
+
+@media(max-width:800px){
+  body{background:radial-gradient(circle at 12% 10%,rgba(246,220,213,.48),transparent 27%),radial-gradient(circle at 88% 42%,rgba(228,219,237,.4),transparent 26%),linear-gradient(150deg,#fff,#fff8ef)}
+  .projects{box-shadow:none}
+}
+
+/* Military-navy carousel, coordinated with the Hong Kong night scene. */
+.hero{background:linear-gradient(135deg,#071426 0%,#142b4b 58%,#28496e 100%)}
+.hero-slide{background-image:linear-gradient(90deg,rgba(5,15,31,.94) 0%,rgba(13,36,66,.7) 47%,rgba(13,31,55,.14) 78%),var(--bg)}
+.hero-slide:after{background:linear-gradient(0deg,rgba(4,13,27,.5),transparent 43%)}
+.brand-hero{background-image:radial-gradient(circle at 78% 38%,rgba(126,157,197,.25),transparent 18%),radial-gradient(circle at 78% 38%,transparent 0 25%,rgba(197,215,236,.12) 25.2% 25.5%,transparent 25.7%),linear-gradient(125deg,#071426 0%,#17345a 58%,#31577d 100%)}
+.placeholder-slide{background-image:radial-gradient(circle at 76% 42%,rgba(197,164,106,.22),transparent 18%),radial-gradient(circle at 78% 44%,rgba(114,151,197,.18),transparent 32%),linear-gradient(120deg,#08162a,#1b3a63 68%,#2c5076)}
+.hero h1 em,.hero h2 em{color:#ead7ad}
+.hero .eyebrow{color:#d9c28f}
+.hero-controls button{color:#edf3f9}
+.dots button{background:rgba(218,229,240,.34)}
+.dots button.active{background:#d2b374}
