@@ -1,143 +1,232 @@
-const slides = [...document.querySelectorAll('.hero-slide')];
-const dots = document.querySelector('.dots');
-const indexEl = document.querySelector('.hero-index span');
-let current = 0;
-let timer;
+const header = document.querySelector('.site-header');
+const toggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav-links');
+const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 
-slides.forEach((_, i) => {
-  const dot = document.createElement('button');
-  dot.type = 'button';
-  dot.setAttribute('aria-label', `切换到第 ${i + 1} 张`);
-  dot.addEventListener('click', () => showSlide(i));
-  dots.appendChild(dot);
+const closeMenu = () => {
+  nav?.classList.remove('open');
+  toggle?.classList.remove('open');
+  toggle?.setAttribute('aria-expanded', 'false');
+};
+
+toggle?.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  toggle.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
 });
 
-function showSlide(next) {
-  current = (next + slides.length) % slides.length;
-  slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
-  [...dots.children].forEach((dot, i) => dot.classList.toggle('active', i === current));
-  indexEl.textContent = String(current + 1).padStart(2, '0');
-  clearInterval(timer);
-  timer = setInterval(() => showSlide(current + 1), 6500);
+navLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 24);
+updateHeader();
+window.addEventListener('scroll', updateHeader, { passive: true });
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reducedMotion || !('IntersectionObserver' in window)) {
+  document.querySelectorAll('.reveal').forEach(element => element.classList.add('show'));
+} else {
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('show');
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -35px' });
+  document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
 }
-document.querySelector('.prev').addEventListener('click', () => showSlide(current - 1));
-document.querySelector('.next').addEventListener('click', () => showSlide(current + 1));
-showSlide(0);
 
-const menu = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.main-nav');
-menu.addEventListener('click', () => {
-  const open = menu.classList.toggle('open');
-  nav.classList.toggle('open', open);
-  menu.setAttribute('aria-expanded', String(open));
-});
-nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  menu.classList.remove('open'); nav.classList.remove('open'); menu.setAttribute('aria-expanded', 'false');
-}));
+const sections = navLinks
+  .map(link => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
 
-document.querySelectorAll('.filter-tabs button').forEach(button => {
+if ('IntersectionObserver' in window) {
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`));
+    });
+  }, { rootMargin: '-35% 0px -58%', threshold: 0 });
+  sections.forEach(section => sectionObserver.observe(section));
+}
+
+const filterButtons = document.querySelectorAll('.case-tabs button');
+const caseCards = document.querySelectorAll('.case-card');
+filterButtons.forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
-    button.classList.add('active');
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.hidden = button.dataset.filter !== 'all' && card.dataset.category !== button.dataset.filter;
+    const filter = button.dataset.filter;
+    filterButtons.forEach(item => {
+      const selected = item === button;
+      item.classList.toggle('active', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+    caseCards.forEach(card => {
+      const hidden = filter !== 'all' && card.dataset.category !== filter;
+      card.classList.toggle('hidden', hidden);
     });
   });
 });
 
-const detailModal = document.querySelector('.detail-modal');
-const detailTitle = detailModal.querySelector('#detail-modal-title');
-const detailBody = detailModal.querySelector('.project-detail-body');
-const detailScroll = detailModal.querySelector('.project-detail-scroll');
-const detailClose = detailModal.querySelector('.detail-toolbar button');
-let detailTrigger = null;
+const projectFilters = document.querySelectorAll('.project-filter-tabs button');
+const projectCards = document.querySelectorAll('.project-card[data-project-id]');
+projectFilters.forEach(button => button.addEventListener('click', () => {
+  projectFilters.forEach(item => {
+    const active = item === button;
+    item.classList.toggle('active', active);
+    item.setAttribute('aria-pressed', String(active));
+  });
+  projectCards.forEach(card => {
+    card.hidden = button.dataset.projectFilter !== 'all' && card.dataset.category !== button.dataset.projectFilter;
+  });
+}));
 
 const projectDetails = {
   talent: {
     title: '香港高端人才通行证计划（TTPS）',
-    content: `<p>高才通计划旨在吸引世界各地具备丰富工作经验及高学历的高端人才到香港探索机遇。这些高端人才包括高收入人士和世界顶尖大学的毕业生。</p><h3>申请条件</h3><div class="condition-block"><b>A 类</b><p>申请前一年全年收入达港币 250 万元或以上（或等值外币），需提供相应的收入证明文件。</p></div><div class="condition-block"><b>B 类</b><p>获合资格大学颁授学士学位，并在过去 5 年内累积至少 3 年工作经验。</p></div><div class="condition-block"><b>C 类</b><p>获合资格大学颁授学士学位，工作经验少于 3 年，但毕业时间不超过 5 年。每年限额 10,000 名，先到先得。</p></div>`
+    content: `<p>面向具备较高收入、合资格大学学士学位及相应工作经历的申请人，分 A、B、C 类评估；申请时一般无须先取得香港聘用。</p><h3>适合人群</h3><p>高收入人士、合资格大学毕业并拥有工作经验的专业人士，以及符合毕业年限要求的合资格大学毕业生。</p><h3>申请要点</h3><p>A 类核对申请前一年的收入；B、C 类核对学位颁授院校、毕业时间与工作经历。获批后还应提前规划香港就业、创业及续签。</p><p><a href="https://www.immd.gov.hk/eng/services/visas/TTPS.html" target="_blank" rel="noopener noreferrer">查看入境处现行条件 ↗</a></p>`
   },
   quality: {
-    title: '香港优秀人才入境计划（QMA）',
-    content: `<p>本计划旨在吸引高技术人才或优才来港定居，借以提升香港的经济竞争力。申请人无须在申请或获准来港定居前先获得本地雇主聘任。</p><h3>申请条件</h3><p>申请人可选择以“综合计分制”或“成就计分制”接受评核。综合计分制设有 12 项评核准则，满足其中 6 项即可申请。</p><ol><li>年龄 50 岁或以下。</li><li>持有优才计划合资格大学的硕士或博士学位。</li><li>持有合资格大学 STEM 学科（科学、科技、工程、数学类专业）的硕士或博士学位。</li><li>具备两种语言的良好书写及口语能力。</li><li>具备良好的英语书写及口语能力。</li><li>拥有 5 年或以上符合学位程度的工作经验。</li><li>拥有 3 年或以上跨国公司或知名企业工作经验。</li><li>拥有 3 年或以上创新科技、金融、国际贸易行业工作经验。</li><li>拥有 2 年或以上国际工作经验。</li><li>申请前 12 个月收入达到 100 万港元或以上。</li><li>拥有年盈利 500 万港元以上公司的控制权（上市公司 10% 或以上，非上市公司 50% 或以上）。</li><li>拥有一家上市公司 10% 或以上的股权。</li></ol><h3>成就计分制</h3><ul><li>申请人曾获得杰出成就奖，例如奥运奖牌、诺贝尔奖、国家或国际奖项。</li><li>申请人可证明其工作得到同业肯定，或对其界别发展有重大贡献，例如获得有关行业的终生成就奖。</li></ul>`
+    title: '香港优秀人才入境计划（QMAS）',
+    content: `<p>吸引高技术人才或优秀人才来港，申请前无须取得香港雇主聘用；需按基本资格和所选评核机制接受甄选。</p><h3>适合人群</h3><p>在学历、语言、专业经历、行业背景或杰出成就方面具有竞争力，并计划来港发展的申请人。</p><h3>申请要点</h3><p>先核对基本资格，再比较综合计分制与成就计分制；综合评核涉及年龄、学历、语言、工作经验、收入及业务拥有权等方面。达到申请门槛不等于保证获批。</p><p><a href="https://www.immd.gov.hk/eng/services/visas/quality_migrant_admission_scheme.html" target="_blank" rel="noopener noreferrer">查看入境处现行条件 ↗</a></p>`
   },
   professional: {
-    title: '香港输入内地人才计划（专才 ASMTP）',
-    content: `<p>具备香港特区所需而又缺乏的特别技能、知识或经验的内地中国居民，可根据输入内地人才计划申请来港工作。本计划并无配额限制，亦不限行业。</p><h3>内地申请人条件</h3><ul><li>取得由认可大学或机构颁发的毕业证、学位证或专业资格证，并且无犯罪记录及不良入境记录。</li><li>已获得香港公司聘用，且岗位与其学历或工作经验有关。</li></ul><h3>香港雇主公司条件</h3><ul><li><b>成立时间：</b>至少一年以上。</li><li><b>实质运营：</b>拥有香港本地办公地址；不少于 3 名本地员工并提供时长不低于 6 个月的强积金缴纳证明；具有实质经营活动并依法纳税。</li><li><b>职位空缺：</b>需证明该职务确有空缺，且在香港难以找到合适人选。</li></ul>`
+    title: '香港输入内地人才计划（ASMTP）',
+    content: `<p>供符合条件的内地专业人士受聘来港工作。计划不设配额及行业限制，但须评估职位、申请人背景和香港雇主的实际聘用安排。</p><h3>适合人群</h3><p>已获香港雇主聘用，具备与拟聘职位相关的学历、专业能力或工作经验的内地居民。</p><h3>申请要点</h3><p>真实职位与人岗匹配、薪酬是否符合市场水平、雇主业务情况及当地人才供应等；雇主条件应按官方规则和实际经营情况评估，不应套用统一的成立年限或员工人数。</p><p><a href="https://www.immd.gov.hk/eng/services/visas/ASMTP.html" target="_blank" rel="noopener noreferrer">查看入境处现行条件 ↗</a></p>`
   },
   investment: {
     title: '香港新资本投资者入境计划（CIES）',
-    content: `<p>新计划旨在进一步丰富人才库及吸引更多新资金落户香港，以增强香港资产及财富管理、金融及相关专业服务界别的发展优势。</p><h3>申请条件</h3><ul><li>年满 18 岁。</li><li><b>适用对象：</b>外国国民、已获外国永久居民身份的中国籍人士、澳门居民及台湾居民。</li><li>申请前 6 个月持续实益拥有不少于 3,000 万港元（或等值外币）净资产，包括共有资产中属于申请人的份额。</li><li>投资不少于 3,000 万港元于获许投资资产。</li><li>无不良入境记录，符合一般入境及保安规定。</li><li>能够供养受养人，不依赖在港投资、工作或公共援助；受养人入境另按当时政策办理。</li></ul>`
+    content: `<p>通过符合计划规定的资产及投资安排，评估合资格人士来港发展的路径；投资决定和身份申请都应独立审慎考虑。</p><h3>适合人群</h3><p>符合计划适用身份范围、净资产及合资格投资要求，并希望统筹家庭和财富安排的人士。</p><h3>申请要点</h3><p>申请人身份、资产持有及评估期、获许投资资产、持续合规与家属安排。计划规则可调整，投资亦有风险，网页不作收益或获批承诺。</p><p><a href="https://www.newcies.gov.hk/en/" target="_blank" rel="noopener noreferrer">查看计划官方规则 ↗</a></p>`
   },
   study: {
     title: '香港留学进修',
-    content: `<p>全称“非本地毕业生留港／回港就业”。申请人在香港修读一年全日制硕士课程，留学期间可申请学生签证在港居留，毕业后可申请香港 IANG 签证，满 7 年可申请香港永久居民身份。</p><h3>申请条件</h3><ul><li><b>年龄：</b>无限制。</li><li><b>学历：</b>大专及以上。</li><li><b>语言：</b>具备英语能力或相关证明。</li><li><b>品格：</b>无犯罪记录及不良入境记录。</li></ul><h3>申请周期</h3><p>申请时间与大学入学时间相关。毕业后找到工作后，申请 IANG 签证的周期一般为 3 至 6 个月。</p><h3>适合人群</h3><ul><li>希望提升学历和职业发展的青年。</li><li>希望为子女教育铺路的“双非”父母。</li><li>希望拓展事业的企业家与专业人士。</li><li>英语或学历背景相对普通者。</li><li>希望以较低成本规划香港身份的家庭。</li></ul>`
+    content: `<p>按学历、语言、专业与职业目标选择香港课程，衔接学生签证及毕业后的发展规划；读书本身不自动取得 IANG 或永久居民资格。</p><h3>适合人群</h3><p>希望通过本科、衔接学士或研究生课程提升学历和职业选择的学生与在职人士。</p><h3>申请要点</h3><p>课程的入学要求、全日制及本地评审状态、学位颁授机构、学制与费用。IANG 对非本地毕业生的课程及资历另有条件，不是所有进修课程毕业后都适用。</p><p><a href="https://www.immd.gov.hk/eng/services/visas/IANG.html" target="_blank" rel="noopener noreferrer">查看入境处 IANG 条件 ↗</a>　<a href="#education" data-close-project-detail>了解升学路径 →</a></p>`
   },
   renewal: {
     title: '香港身份续签服务',
-    content: `<p>香港身份证分为“香港永久性居民身份证”及“香港居民身份证”。香港永久性居民身份证由入境处签发给拥有香港居留权的人士；香港居民身份证则签发给尚未拥有香港居留权的人士。</p><p>持有香港居民身份证并连续续签 7 年以上，可申请香港永久居民身份。港恒可围绕续签材料、时间节点及长期身份衔接提供持续支持。</p><div class="detail-note"><b>温馨提示</b><p>即使最初的身份申请业务并非由港恒办理，我们也可以协助提供续签服务。</p></div>`
+    content: `<p>不同入境计划的续签条件各异。提前梳理在港工作、业务、家庭和居留安排，避免只关注首次获批而忽略后续发展。</p><h3>适合人群</h3><p>已持有人才、专业人士等入境许可、临近续签或需要重新规划在港发展的人士；首次申请不是由港恒办理亦可咨询。</p><h3>申请要点</h3><p>所持计划的续签规定、实际在港发展和申请时间。香港居民身份证不等于永久性居民身份证；连续通常居港不少于七年等法定条件须由入境处核实，并非“续签满七年自动转永居”。</p><p><a href="https://www.immd.gov.hk/eng/services/right-of-abode-in-hksar/apply.html" target="_blank" rel="noopener noreferrer">查看入境处居留权说明 ↗</a></p>`
   }
 };
 
-function openDetail(card) {
-  const project = projectDetails[card.dataset.projectId];
-  if (!project) return;
-  detailTrigger = card;
-  detailTitle.textContent = project.title;
-  detailBody.innerHTML = project.content;
-  detailModal.hidden = false;
-  document.body.classList.add('modal-open');
-  detailScroll.scrollTop = 0;
-  detailClose.focus();
-}
+const projectModal = document.querySelector('.project-detail-modal');
+const projectModalTitle = projectModal.querySelector('#project-detail-title');
+const projectModalBody = projectModal.querySelector('.project-detail-body');
+const projectModalScroll = projectModal.querySelector('.project-detail-scroll');
+const projectModalClose = projectModal.querySelector('.project-detail-toolbar button');
+const projectQrModal = document.querySelector('.project-qr-modal');
+const projectQrClose = projectQrModal.querySelector('.project-qr-close');
+const pathQuizResult = projectQrModal.querySelector('.path-quiz-result');
+const pathQuizResultTitle = projectQrModal.querySelector('#path-quiz-result-title');
+const pathQuizResultList = projectQrModal.querySelector('.path-quiz-result-list');
+let projectTrigger = null;
+let projectQrTrigger = null;
 
-function closeDetail() {
-  if (detailModal.hidden) return;
-  detailModal.hidden = true;
-  document.body.classList.remove('modal-open');
-  detailBody.innerHTML = '';
-  detailTrigger?.focus();
-}
+const openProjectDetail = card => {
+  const detail = projectDetails[card.dataset.projectId];
+  if (!detail) return;
+  projectTrigger = card;
+  projectModalTitle.textContent = detail.title;
+  projectModalBody.innerHTML = detail.content;
+  projectModal.hidden = false;
+  document.body.classList.add('project-modal-open');
+  projectModalScroll.scrollTop = 0;
+  projectModalClose.focus();
+};
 
-document.querySelectorAll('[data-project-id]').forEach(card => {
-  card.addEventListener('click', () => openDetail(card));
+const closeProjectDetail = () => {
+  if (projectModal.hidden) return;
+  projectModal.hidden = true;
+  projectModalBody.innerHTML = '';
+  document.body.classList.remove('project-modal-open');
+  projectTrigger?.focus();
+};
+
+projectCards.forEach(card => {
+  card.addEventListener('click', () => openProjectDetail(card));
   card.addEventListener('keydown', event => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      openDetail(card);
-    }
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    openProjectDetail(card);
   });
 });
-detailModal.querySelectorAll('[data-close-detail]').forEach(button => button.addEventListener('click', closeDetail));
-
-const qrModal = document.querySelector('.qr-modal');
-const qrClose = qrModal.querySelector('.qr-modal-close');
-let qrTrigger = null;
-
-function openQr(event) {
-  qrTrigger = event.currentTarget;
-  qrModal.hidden = false;
-  document.body.classList.add('modal-open');
-  qrClose.focus();
-}
-
-function closeQr() {
-  if (qrModal.hidden) return;
-  qrModal.hidden = true;
-  if (detailModal.hidden) document.body.classList.remove('modal-open');
-  qrTrigger?.focus();
-}
-
-document.querySelectorAll('[data-qr-open]').forEach(button => button.addEventListener('click', openQr));
-qrModal.querySelectorAll('[data-qr-close]').forEach(button => button.addEventListener('click', closeQr));
+projectModal.querySelectorAll('[data-close-project-detail]').forEach(control => control.addEventListener('click', closeProjectDetail));
+projectModalBody.addEventListener('click', event => {
+  if (event.target.closest('[data-close-project-detail]')) closeProjectDetail();
+});
+const openProjectQr = (trigger, isQuiz = false) => {
+  projectQrTrigger = trigger;
+  projectQrModal.classList.toggle('quiz-mode', isQuiz);
+  projectQrModal.setAttribute('aria-labelledby', isQuiz ? 'path-quiz-result-title' : 'project-qr-title');
+  pathQuizResult.hidden = !isQuiz;
+  projectQrModal.hidden = false;
+  document.body.classList.add('project-modal-open');
+  projectQrClose.focus();
+};
+const closeProjectQr = () => {
+  if (projectQrModal.hidden) return;
+  projectQrModal.hidden = true;
+  if (projectModal.hidden) document.body.classList.remove('project-modal-open');
+  projectQrTrigger?.focus();
+};
+projectModal.querySelector('[data-open-project-qr]').addEventListener('click', event => openProjectQr(event.currentTarget));
+projectQrModal.querySelectorAll('[data-close-project-qr]').forEach(control => control.addEventListener('click', closeProjectQr));
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') {
-    if (!qrModal.hidden) closeQr();
-    else closeDetail();
+  if (event.key !== 'Escape') return;
+  if (!projectQrModal.hidden) {
+    closeProjectQr();
+  } else {
+    closeProjectDetail();
   }
 });
 
-const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-  if (entry.isIntersecting) entry.target.classList.add('revealed');
-}), { threshold: .12 });
-document.querySelectorAll('section:not(.hero), .project-card').forEach(el => { el.classList.add('reveal'); observer.observe(el); });
+const pathQuizForm = document.querySelector('#path-quiz-form');
+const pathQuizError = document.querySelector('#path-quiz-error');
+const pathQuizProjects = {
+  employer: ['香港专才计划', '已有香港雇主，可进一步核对岗位、薪酬及雇主资质。', 'professional'],
+  quality: ['香港优才计划', '具备基本学历、工作经历及生活资金，可进一步评估综合计分制等要求。', 'quality'],
+  talentB: ['高才通 B 类', '合资格大学学士学位及近五年的工作经验，适合进一步核对 B 类要求。', 'talent'],
+  talentC: ['高才通 C 类', '近五年毕业且工作经验少于三年，可进一步核对院校名单、配额及其他限制。', 'talent'],
+  talentA: ['高才通 A 类', '申请前一年的相关收入达到门槛，可进一步核对收入证明。', 'talent'],
+  vtc: ['VTC 升学路径', '可了解适合高中毕业生的课程、入学条件及后续规划。', 'study'],
+  topup: ['Top-up 专升本', '可了解专升本课程的学历衔接、入学要求及学习安排。', 'study'],
+  investment: ['新资本投资者入境计划', '可进一步核对适用身份、净资产持有期及获许投资要求。', 'investment']
+};
+
+pathQuizForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(pathQuizForm);
+  const basicEligible = formData.get('adult') === 'yes' && formData.get('record') === 'yes';
+  const selected = [...pathQuizForm.querySelectorAll('.path-quiz-options input:checked')].map(input => input.value);
+  if (basicEligible && selected.length === 0) {
+    pathQuizError.hidden = false;
+    return;
+  }
+  pathQuizError.hidden = true;
+  pathQuizResultTitle.textContent = basicEligible ? '为您找到这些可考虑的方向' : '建议先与顾问确认申请条件';
+  pathQuizResultList.replaceChildren();
+  if (basicEligible) {
+    selected.forEach(key => {
+      const [title, description, projectId] = pathQuizProjects[key];
+      const item = document.createElement('article');
+      const titleEl = document.createElement('h4');
+      const descriptionEl = document.createElement('p');
+      const detailButton = document.createElement('button');
+      titleEl.textContent = title;
+      descriptionEl.textContent = description;
+      detailButton.type = 'button';
+      detailButton.textContent = '查看项目介绍 →';
+      detailButton.addEventListener('click', () => {
+        const card = document.querySelector(`[data-project-id="${projectId}"]`);
+        if (card) {
+          closeProjectQr();
+          openProjectDetail(card);
+        }
+      });
+      item.append(titleEl, descriptionEl, detailButton);
+      pathQuizResultList.appendChild(item);
+    });
+  } else {
+    const note = document.createElement('p');
+    note.textContent = '本自测按年满 18 周岁、无犯罪记录作初步筛选。您的情况需要单独核对具体项目及院校要求。';
+    pathQuizResultList.appendChild(note);
+  }
+  openProjectQr(pathQuizForm.querySelector('[type="submit"]'), true);
+});
